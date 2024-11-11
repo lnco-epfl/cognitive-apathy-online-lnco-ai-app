@@ -16,8 +16,9 @@
   "VALIDATION_VIDEO_TUTORIAL_MESSAGE": "<h2>Calibration</h2><h3>Part 3</h3><p1>Get the top of the red bar in the target area with your taps!</p1><br><ul class = 'warning'><li>Do not tap the <b>{{KEY_TO_PRESS}}</b> key until the <b>GO!</b> appears</li> <li>Do not release the <b>{{KEYS_TO_HOLD_0}}</b>, <b>{{KEYS_TO_HOLD_1}}</b>, <b>{{KEYS_TO_HOLD_2}}</b>, <b>Spacebar</b>, <b>Right Arrow</b> until prompted.</li></ul>",
   "INTERACTIVE_KEYBOARD_TUTORIAL_MESSAGE": "<br> <b>PRACTICE</b><br>On your physical keyboard:<br><ol><li> You will place your pinky on the <b>{{KEYS_TO_HOLD_0}}</b> key<br></li><li> Place your ring finger on the <b>{{KEYS_TO_HOLD_1}}</b> key<br></li> <li>Place your middle finger on the <b>{{KEYS_TO_HOLD_2}}</b> key</li><li>Place your left thumb on the <b>spacebar</b> key</li><li>Place your right index finger on the <b>right arrow</b> key</li></ol><br><p>While still holding down with these fingers, simultaneously, when you see the <b>GO!</b>, tap the <b>{{KEY_TO_PRESS}}</b> key, <b>repeatedly</b> with your index finger <b>as fast as you can!</b></p><br><ul class = 'warning'><li>Do not tap the <b>{{KEY_TO_PRESS}}</b> key until the <b>GO!</b> appears</li> <li>Do not release the <b>{{KEYS_TO_HOLD_0}}</b>, <b>{{KEYS_TO_HOLD_1}}</b>, <b>{{KEYS_TO_HOLD_2}}</b>, <b>Spacebar</b>, <b>Right Arrow</b> until prompted.</li></ul>",
   "PREMATURE_KEY_RELEASE_ERROR_MESSAGE": "You released the keys early!",
-  "LIKERT_PREAMBLE": "During this <b>last block of trials</b>, how would you respond to the following question?",
+  "LIKERT_PREAMBLE_BLOCK": "During this last part of the experiment, how would you respond to the following question?",
   "LIKERT_PREAMBLE_DEMO": "During this last block of practice trials, how would you respond to the following question?",
+  "LIKERT_PREAMBLE_FINAL_QUESTIONS": "Regarding yourself now, how would you rate the following?",
   "FAILED_MINIMUM_DEMO_TAPS_MESSAGE": "You did not tap enough during the last practice trial. Please try again.",
   "HOLD_KEYS_MESSAGE": "<p>Hold the <b>{{KEYS_TO_HOLD_0}}</b>, <b>{{KEYS_TO_HOLD_1}}</b>, <b>{{KEYS_TO_HOLD_2}}</b>, <b>Spacebar</b> and <b>Right Arrow</b> keys!</p>",
   "KEY_TAPPED_EARLY_MESSAGE": "Key was tapped too early. Please wait for the appropriate time to press the key.",
@@ -53,21 +54,27 @@
     "QUESTION_2": "I found the task difficult."
   },
   "LIKERT_SURVEY_2_QUESTIONS": {
-    "QUESTION_1": "My task performance affects how I feel now.",
-    "QUESTION_2": "I felt bad when I did not perform the task successfully.",
-    "QUESTION_3": "It was difficult to work out what I had to do to complete the task successfully.",
+    "QUESTION_1": "I felt indifferent about my performance in the task.",
+    "QUESTION_2": "I felt satisfied when I saw that I was succeeding in the task.",
+    "QUESTION_3": "It was hard to work out how to complete the task successfully.",
     "QUESTION_4": "It was difficult to keep my mind on the task.",
-    "QUESTION_5": "I set myself the goal to perform the task better.",
-    "QUESTION_6": "I felt that I needed a push to continue tapping until the end of the task.",
-    "QUESTION_7": "I feel motivated to continue the task.",
-    "QUESTION_8": "My left arm feels tired."
+    "QUESTION_5": "I was continuously trying to perform the task better.",
+    "QUESTION_6": "I felt that I needed a push to continue tapping until the end of the task."
+  },
+  "LIKERT_SURVEY_3_QUESTIONS": {
+    "QUESTION_1": "Your Level of Attention",
+    "QUESTION_2": "Your Level of Motivation",
+    "QUESTION_3": "Your Level of Muscular Fatigue of the Left Arm",
+    "QUESTION_4": "Your Level of Overall Tiredness"
   },
   "END_EXPERIMENT_MESSAGE": "The experiment is now complete. Please let the experimenter know.",
   "PROGRESS_BAR": {
     "PROGRESS_BAR_INTRODUCTION": "Introduction",
     "PROGRESS_BAR_PRACTICE": "Practice",
     "PROGRESS_BAR_CALIBRATION": "Calibration",
-    "PROGRESS_BAR_TRIAL_BLOCKS": "Trial Block"
+    "PROGRESS_BAR_VALIDATION": "Validation",
+    "PROGRESS_BAR_TRIAL_BLOCKS": "Trial Block",
+    "PROGRESS_BAR_FINAL_CALIBRATION": "Final Calibration"
   },
   "TUTORIAL_INTRODUCTION_MESSAGE": "The first part of the experiment will consist of two different sections:<br><br><ol style='text-align: left;'><li>A practice section so you can get familiarized with the task you will be performing.</li><li>A calibration section to ensure that everything is running correctly.</li></ol><p>Please follow the instructions throughout each section carefully.</p>Press the button below to begin.",
   "EXPERIMENT_HAS_ENDED_MESSAGE": "Thank you very much for your participation!",

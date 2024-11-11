@@ -9,10 +9,8 @@ import {
   ADDITIONAL_CALIBRATION_PART_1_DIRECTIONS,
   AUTO_DECREASE_AMOUNT,
   AUTO_DECREASE_RATE,
-  CALIBRATION_PROGRESS_BAR,
   CONTINUE_BUTTON_MESSAGE,
   EXPECTED_MAXIMUM_PERCENTAGE_FOR_CALIBRATION,
-  PROGRESS_BAR,
   TRIAL_DURATION,
 } from '../utils/constants';
 import {
@@ -25,7 +23,6 @@ import {
 import {
   autoIncreaseAmountCalculation,
   calculateMedianTapCount,
-  changeProgressBar,
   checkFlag,
   checkKeys,
 } from '../utils/utils';
@@ -111,6 +108,10 @@ const calibrationTrialBody = ({
     );
   },
   on_start(trial: Trial) {
+    const photoDiodeElement = document.getElementById('photo-diode-element');
+    if (photoDiodeElement) {
+      photoDiodeElement.className = `photo-diode photo-diode-white ${state.getGeneralSettings().usePhotoDiode}`;
+    }
     const keyTappedEarlyFlag = checkFlag(
       OtherTaskStagesType.Countdown,
       'keyTappedEarlyFlag',
@@ -123,6 +124,11 @@ const calibrationTrialBody = ({
   on_finish(data: TappingTaskDataType) {
     // Only check calibration fail logic if the key was not tapped early and if the keys were not released early
     // and, in case of the final calibration, if the minimum taps was not reached
+    /* Disable the photodiode trigger in case used */
+    const photoDiodeElement = document.getElementById('photo-diode-element');
+    if (photoDiodeElement) {
+      photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+    }
     if (
       !data.keysReleasedFlag &&
       !data.keyTappedEarlyFlag &&
@@ -299,13 +305,6 @@ export const calibrationTrial = (
     }),
   ],
   on_timeline_finish() {
-    if (state.getState().calibrationPartsPassed[calibrationPart]) {
-      changeProgressBar(
-        PROGRESS_BAR.PROGRESS_BAR_CALIBRATION,
-        CALIBRATION_PROGRESS_BAR[calibrationPart],
-        jsPsych,
-      );
-    }
     updateData(jsPsych.data.get());
   },
 });
@@ -337,13 +336,4 @@ export const conditionalCalibrationTrial = (
     },
     updateData,
   ),
-  on_timeline_finish() {
-    if (state.getState().calibrationPartsPassed[calibrationPart]) {
-      changeProgressBar(
-        PROGRESS_BAR.PROGRESS_BAR_CALIBRATION,
-        CALIBRATION_PROGRESS_BAR[calibrationPart],
-        jsPsych,
-      );
-    }
-  },
 });

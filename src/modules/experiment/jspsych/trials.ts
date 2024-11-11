@@ -129,6 +129,10 @@ const generateTaskTrial = (
       },
     },
     on_start(data: TaskTrialData) {
+      const photoDiodeElement = document.getElementById('photo-diode-element');
+      if (photoDiodeElement) {
+        photoDiodeElement.className = `photo-diode photo-diode-white ${state.getGeneralSettings().usePhotoDiode}`;
+      }
       const keyTappedEarlyFlag = checkFlag(
         OtherTaskStagesType.Countdown,
         'keyTappedEarlyFlag',
@@ -139,6 +143,10 @@ const generateTaskTrial = (
       data.keyTappedEarlyFlag = keyTappedEarlyFlag;
     },
     on_finish(data: TaskTrialData) {
+      const photoDiodeElement = document.getElementById('photo-diode-element');
+      if (photoDiodeElement) {
+        photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+      }
       if (demo) {
         // eslint-disable-next-line no-param-reassign
         data.minimumTapsReached = data.tapCount > MINIMUM_DEMO_TAPS;
@@ -199,12 +207,14 @@ const generateTaskTrial = (
         {
           timeline: [loadingBarTrial(false, jsPsych)],
           conditional_function: () =>
-            !checkFlag(OtherTaskStagesType.Accept, 'accepted', jsPsych), // Use trialData.accepted in the conditional function
+            !checkFlag(OtherTaskStagesType.Accept, 'accepted', jsPsych) ||
+            randomSkip, // Use trialData.accepted in the conditional function
         },
         {
           timeline: [loadingBarTrial(true, jsPsych)],
           conditional_function: () =>
-            checkFlag(OtherTaskStagesType.Accept, 'accepted', jsPsych), // Use trialData.accepted in the conditional function
+            checkFlag(OtherTaskStagesType.Accept, 'accepted', jsPsych) &&
+            !randomSkip, // Use trialData.accepted in the conditional function
         },
       ]),
 ];
@@ -319,8 +329,22 @@ export const createTaskBlockTrials = (
             originalBounds: BOUNDS_DEFINITIONS[bounds],
             delay: actualDelay,
           },
+          on_start: () => {
+            const photoDiodeElement = document.getElementById(
+              'photo-diode-element',
+            );
+            if (photoDiodeElement) {
+              photoDiodeElement.className = `photo-diode photo-diode-white ${state.getGeneralSettings().usePhotoDiode}`;
+            }
+          },
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           on_finish: (data: any) => {
+            const photoDiodeElement = document.getElementById(
+              'photo-diode-element',
+            );
+            if (photoDiodeElement) {
+              photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+            }
             // ADD TYPE FOR DATA
             // eslint-disable-next-line no-param-reassign
             data.accepted = data.response === 'ArrowRight';
@@ -392,9 +416,19 @@ export const generateTaskTrialBlock = (
   jsPsych: JsPsych,
   state: ExperimentState,
   delay: DelayType,
+  index: number,
   updateData: (data: DataCollection) => void,
 ): Timeline => [
-  { timeline: createTaskBlockDemo(jsPsych, state, delay, updateData) },
+  {
+    timeline: createTaskBlockDemo(jsPsych, state, delay, updateData),
+    on_timeline_start() {
+      changeProgressBar(
+        `${PROGRESS_BAR.PROGRESS_BAR_CALIBRATION} ${index + 1}`,
+        state.getProgressBarStatus('block', index),
+        jsPsych,
+      );
+    },
+  },
   { timeline: createTaskBlockTrials(jsPsych, state, delay, updateData) },
   {
     // Likert scale survey after block

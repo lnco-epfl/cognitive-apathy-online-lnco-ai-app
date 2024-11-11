@@ -39,13 +39,6 @@ const defaultValidationBounds = {
   [ValidationPartType.ValidationExtra]: [70, 90],
 };
 
-const defaultProgressBarMovements = {
-  [ValidationPartType.ValidationEasy]: 0.6,
-  [ValidationPartType.ValidationMedium]: 0.75,
-  [ValidationPartType.ValidationHard]: 0.9,
-  [ValidationPartType.ValidationExtra]: 0,
-};
-
 /**
  * @function handleValidationFinish
  * @description Handles the outcome of a validation trial by updating the state based on whether the participant succeeded or failed. It checks if additional validation trials are required based on the number of failures.
@@ -144,6 +137,12 @@ export const createValidationTrial = (
                 task: validationName,
               },
               on_start(trial: TaskTrialData) {
+                const photoDiodeElement = document.getElementById(
+                  'photo-diode-element',
+                );
+                if (photoDiodeElement) {
+                  photoDiodeElement.className = `photo-diode photo-diode-white ${state.getGeneralSettings().usePhotoDiode}`;
+                }
                 const keyTappedEarlyFlag = checkFlag(
                   OtherTaskStagesType.Countdown,
                   'keyTappedEarlyFlag',
@@ -155,6 +154,12 @@ export const createValidationTrial = (
                 return keyTappedEarlyFlag;
               },
               on_finish(data: ValidationData) {
+                const photoDiodeElement = document.getElementById(
+                  'photo-diode-element',
+                );
+                if (photoDiodeElement) {
+                  photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+                }
                 // eslint-disable-next-line no-param-reassign
                 data.task = validationName;
                 handleValidationFinish(data, validationName, state);
@@ -183,20 +188,6 @@ export const createValidationTrial = (
       repetitions: state.getValidationSettings().numberOfValidationsPerType,
     },
   ],
-  on_timeline_finish() {
-    if (
-      !(
-        validationName === ValidationPartType.ValidationHard &&
-        state.getState().validationState.extraValidationRequired
-      )
-    ) {
-      changeProgressBar(
-        `${PROGRESS_BAR.PROGRESS_BAR_CALIBRATION}`,
-        defaultProgressBarMovements[validationName],
-        jsPsych,
-      );
-    }
-  },
 });
 
 /**

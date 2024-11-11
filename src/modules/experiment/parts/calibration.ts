@@ -22,14 +22,17 @@ import { changeProgressBar } from '../utils/utils';
  * @param jsPsych containing the experiment
  * @returns the trial that shows the pre calibration screens
  */
-export const calibrationSectionDirectionTrial = (jsPsych: JsPsych): Trial => ({
+export const calibrationSectionDirectionTrial = (
+  jsPsych: JsPsych,
+  state: ExperimentState,
+): Trial => ({
   type: HtmlButtonResponsePlugin,
   choices: [CONTINUE_BUTTON_MESSAGE],
   stimulus: [CALIBRATION_SECTION_MESSAGE],
   on_finish() {
     changeProgressBar(
       `${PROGRESS_BAR.PROGRESS_BAR_CALIBRATION}`,
-      0.11,
+      state.getProgressBarStatus('calibration'),
       jsPsych,
     );
   },
@@ -54,11 +57,21 @@ export const instructionalTrial = (message: string): Trial => ({
 const calibrationVideo = (
   jsPsych: JsPsych,
   calibrationPart: CalibrationPartType,
+  state: ExperimentState,
 ): Trial => ({
   type: HtmlButtonResponsePlugin,
   stimulus: [calibrationStimuliObject[calibrationPart]],
   choices: [CONTINUE_BUTTON_MESSAGE],
   enable_button_after: ENABLE_BUTTON_AFTER_TIME,
+  on_start() {
+    if (calibrationPart === CalibrationPartType.FinalCalibrationPart1) {
+      changeProgressBar(
+        `${PROGRESS_BAR.PROGRESS_BAR_FINAL_CALIBRATION}`,
+        state.getProgressBarStatus('finalCal'),
+        jsPsych,
+      );
+    }
+  },
   on_finish() {
     // Clear the display element
     // eslint-disable-next-line no-param-reassign
@@ -74,7 +87,7 @@ export const buildCalibration = (
   const calibrationTimeline: Timeline = [];
 
   // User is displayed information pertaining to how the calibration section of the experiment is structured
-  calibrationTimeline.push(calibrationSectionDirectionTrial(jsPsych));
+  calibrationTimeline.push(calibrationSectionDirectionTrial(jsPsych, state));
 
   // User is displayed instructions on how the calibration part 1 trials will proceed
   calibrationTimeline.push(instructionalTrial(CALIBRATION_PART_1_DIRECTIONS));
@@ -101,7 +114,7 @@ export const buildCalibration = (
 
   // User is displayed instructions and visual demonstration on how the calibration part 2 trials will proceed
   calibrationTimeline.push(
-    calibrationVideo(jsPsych, CalibrationPartType.CalibrationPart2),
+    calibrationVideo(jsPsych, CalibrationPartType.CalibrationPart2, state),
   );
 
   // Calibration part 2 proceeds (3 trials, user taps as fast as possible, visual feedback)
@@ -135,7 +148,7 @@ export const buildFinalCalibration = (
   const finalCalibrationTimeline: Timeline = [];
   // User is displayed instructions on how the final calibration part 1 trials will proceed
   finalCalibrationTimeline.push(
-    calibrationVideo(jsPsych, CalibrationPartType.FinalCalibrationPart1),
+    calibrationVideo(jsPsych, CalibrationPartType.FinalCalibrationPart1, state),
   );
   // Calibration part 1 proceeds (3 trials, user taps as fast as possible, no visual feedback)
   finalCalibrationTimeline.push(
@@ -148,7 +161,7 @@ export const buildFinalCalibration = (
   );
   // User is displayed instructions on how the final calibration part 1 trials will proceed
   finalCalibrationTimeline.push(
-    calibrationVideo(jsPsych, CalibrationPartType.FinalCalibrationPart2),
+    calibrationVideo(jsPsych, CalibrationPartType.FinalCalibrationPart2, state),
   );
   // Calibration part 2 proceeds (3 trials, user taps as fast as possible, visual feedback)
   finalCalibrationTimeline.push(

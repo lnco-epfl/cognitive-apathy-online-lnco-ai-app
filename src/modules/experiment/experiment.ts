@@ -8,6 +8,7 @@
 import PreloadPlugin from '@jspsych/plugin-preload';
 import { DataCollection, JsPsych, initJsPsych } from 'jspsych';
 
+import { ExperimentResult } from '../config/appResults';
 import { AllSettingsType } from '../context/SettingsContext';
 import { ExperimentState } from './jspsych/experiment-state-class';
 import { finishExperiment } from './jspsych/finish';
@@ -32,14 +33,21 @@ export async function run({
   updateData,
 }: {
   assetPaths: { images: string[]; audio: string[]; video: string[] };
-  input: AllSettingsType;
+  input: { settings: AllSettingsType; results: ExperimentResult };
   updateData: (data: DataCollection, settings: AllSettingsType) => void;
 }): Promise<JsPsych> {
   // To do: Initiate a state based on 'input' containing all settings
-  const state = new ExperimentState(input);
+  const state = new ExperimentState(input.settings);
+
+  if (state.getGeneralSettings().usePhotoDiode !== 'off') {
+    const photoDiodeElement = document.createElement('div');
+    photoDiodeElement.id = 'photo-diode-element';
+    photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+    document.getElementById('jspsych-content')?.appendChild(photoDiodeElement);
+  }
 
   const updateDataWithSettings = (data: DataCollection): void => {
-    updateData(data, input);
+    updateData(data, input.settings);
   };
 
   const jsPsych = initJsPsych({

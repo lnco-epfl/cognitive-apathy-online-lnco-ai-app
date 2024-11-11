@@ -48,7 +48,7 @@ export const noStimuliVideoTutorialTrial = (jsPsych: JsPsych): Trial => ({
     // eslint-disable-next-line no-param-reassign
     jsPsych.getDisplayElement().innerHTML = '';
     // Change progress bar
-    changeProgressBar(PROGRESS_BAR.PROGRESS_BAR_PRACTICE, 0.07, jsPsych);
+    changeProgressBar(PROGRESS_BAR.PROGRESS_BAR_PRACTICE, 0.02, jsPsych);
   },
 });
 
@@ -56,10 +56,11 @@ export const noStimuliVideoTutorialTrial = (jsPsych: JsPsych): Trial => ({
  *
  * @returns return an interactive countdown trial that showcases a keyboard waits, for the user to press the correct keys and then counts down for the trial to start
  */
-export const interactiveCountdown = (): Trial => ({
+export const interactiveCountdown = (state: ExperimentState): Trial => ({
   type: CountdownTrialPlugin,
   message: INTERACTIVE_KEYBOARD_TUTORIAL_MESSAGE,
   showKeyboard: true,
+  usePhotoDiode: state.getGeneralSettings().usePhotoDiode,
   data: {
     task: 'countdown',
   },
@@ -77,15 +78,25 @@ export const interactiveCountdown = (): Trial => ({
  *
  * @returns {Object} - A jsPsych trial object containing the practice task and a conditional release keys step.
  */
-export const practiceTrial = (jsPsych: JsPsych): Trial => ({
+export const practiceTrial = (
+  jsPsych: JsPsych,
+  state: ExperimentState,
+): Trial => ({
   timeline: [
     {
       type: TappingTask,
       showThermometer: false,
       task: 'practice',
-
-      // This code adds the key tapped early flag to the actual task in case it was tapped too early during countdown
+      usePhotoDiode: state.getGeneralSettings().usePhotoDiode,
       on_start(trial: Trial) {
+        /* Enable the photodiode trigger in case used */
+        const photoDiodeElement = document.getElementById(
+          'photo-diode-element',
+        );
+        if (photoDiodeElement) {
+          photoDiodeElement.className = `photo-diode photo-diode-white ${state.getGeneralSettings().usePhotoDiode}`;
+        }
+        // This code adds the key tapped early flag to the actual task in case it was tapped too early during countdown
         const keyTappedEarlyFlag = checkFlag(
           OtherTaskStagesType.Countdown,
           'keyTappedEarlyFlag',
@@ -93,6 +104,15 @@ export const practiceTrial = (jsPsych: JsPsych): Trial => ({
         );
         // eslint-disable-next-line no-param-reassign
         trial.keyTappedEarlyFlag = keyTappedEarlyFlag;
+      },
+      on_finish() {
+        /* Disable the photodiode trigger in case used */
+        const photoDiodeElement = document.getElementById(
+          'photo-diode-element',
+        );
+        if (photoDiodeElement) {
+          photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+        }
       },
     },
     {
@@ -127,8 +147,8 @@ export const practiceLoop = (
     {
       // The general timeline of the practice loop with the interactive timeline, the actual trial and then the loading bar
       timeline: [
-        interactiveCountdown(),
-        practiceTrial(jsPsych),
+        interactiveCountdown(state),
+        practiceTrial(jsPsych, state),
         loadingBarTrial(true, jsPsych),
       ],
       // Repeat if the keys were released early, if user tapped before go, or didn't hit minimum required taps
@@ -152,18 +172,15 @@ export const practiceLoop = (
       },
     },
   ],
+  on_timeline_start() {
+    changeProgressBar(
+      PROGRESS_BAR.PROGRESS_BAR_PRACTICE,
+      state.getProgressBarStatus('practice'),
+      jsPsych,
+    );
+  },
   on_timeline_finish() {
     state.incrementNumberPracticeLoopsCompleted();
-    const progressBarProgress = jsPsych.progressBar!.progress;
-    if (state.getState().numberOfPracticeLoopsCompleted === 4) {
-      changeProgressBar(PROGRESS_BAR.PROGRESS_BAR_CALIBRATION, 0, jsPsych);
-    } else {
-      changeProgressBar(
-        PROGRESS_BAR.PROGRESS_BAR_PRACTICE,
-        progressBarProgress + 0.25,
-        jsPsych,
-      );
-    }
   },
 });
 
