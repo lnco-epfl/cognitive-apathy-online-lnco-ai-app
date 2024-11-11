@@ -391,7 +391,7 @@ export const createRewardDisplayTrial = (
   choices: [CONTINUE_BUTTON_MESSAGE],
   stimulus() {
     const totalSuccessfulReward = calculateTotalReward(jsPsych);
-    return `<p>${REWARD_TOTAL_MESSAGE(totalSuccessfulReward.toFixed(2))}</p>`;
+    return `<p>${REWARD_TOTAL_MESSAGE(totalSuccessfulReward.toFixed(0))}</p>`;
   },
   data: {
     task: 'display_reward',

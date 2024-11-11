@@ -15,7 +15,7 @@ export const AUTO_DECREASE_RATE = 100;
 export const AUTO_INCREASE_AMOUNT = 10;
 export const MAXIMUM_THERMOMETER_HEIGHT = 100;
 export const EXPECTED_MAXIMUM_PERCENTAGE = 100;
-export const KEYS_TO_HOLD = ['a', 'w', 'e'];
+export const KEYS_TO_HOLD = ['a', 'w', 'e', ' ', 'arrowright'];
 export const KEY_TO_PRESS = 'f';
 export const NUM_TAPS_WITHOUT_DELAY = 5;
 
@@ -34,9 +34,9 @@ export const BOUNDS_DEFINITIONS: { [key in BoundsType]: [number, number] } = {
 export const REWARD_DEFINITIONS: {
   [key in RewardType]: [number, number, number];
 } = {
-  [RewardType.Low]: [0.01, 0.02, 0.03],
-  [RewardType.Middle]: [0.05, 0.06, 0.07],
-  [RewardType.High]: [0.1, 0.11, 0.12],
+  [RewardType.Low]: [1, 2, 3],
+  [RewardType.Middle]: [5, 6, 7],
+  [RewardType.High]: [10, 11, 12],
 };
 
 export const NUM_CALIBRATION_WITHOUT_FEEDBACK_TRIALS = 4; // 4 default

@@ -43,7 +43,9 @@ export async function run({
     const photoDiodeElement = document.createElement('div');
     photoDiodeElement.id = 'photo-diode-element';
     photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
-    document.getElementById('jspsych-content')?.appendChild(photoDiodeElement);
+    document
+      .getElementById('jspsych-display-element')
+      ?.appendChild(photoDiodeElement);
   }
 
   const updateDataWithSettings = (data: DataCollection): void => {
@@ -54,7 +56,7 @@ export async function run({
     show_progress_bar: true,
     auto_update_progress_bar: false,
     message_progress_bar: PROGRESS_BAR.PROGRESS_BAR_INTRODUCTION,
-    display_element: 'jspsych-content',
+    display_element: 'jspsych-display-element',
     /* on_finish: (): void => {
       // const resultData = jsPsych.data.get();
       // onFinish(resultData);

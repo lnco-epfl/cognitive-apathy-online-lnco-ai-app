@@ -75,9 +75,5 @@ export const ExperimentLoader: FC = () => {
     }
   }, [experimentResultsAppData, status]);
 
-  return (
-    <div className="jspsych-content-wrapper">
-      <div id="jspsych-content" className="jspsych-content" />
-    </div>
-  );
+  return <div id="jspsych-display-element" />;
 };
