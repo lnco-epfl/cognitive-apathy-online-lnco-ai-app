@@ -9,6 +9,7 @@ import {
   validationTrialExtra,
 } from '../jspsych/validation-trial';
 import { likertFinalQuestionAfterValidation } from '../trials/likert-trial';
+import { DeviceType } from '../triggers/serialport';
 import {
   CONTINUE_BUTTON_MESSAGE,
   ENABLE_BUTTON_AFTER_TIME,
@@ -48,6 +49,7 @@ export const buildValidation = (
   jsPsych: JsPsych,
   state: ExperimentState,
   updateData: (data: DataCollection) => void,
+  device: DeviceType,
 ): Timeline => {
   const validationTimeline: Timeline = [];
   // User is displayed instructions and visual demonstration on how the validations trials will proceed
@@ -68,13 +70,13 @@ export const buildValidation = (
         break;
     }
     validationTimeline.push(
-      createValidationTrial(validationPart, jsPsych, state, updateData),
+      createValidationTrial(validationPart, jsPsych, state, updateData, device),
     );
   });
 
   // If 3/4 or more of any of the group of the validation trials are failed for any reason, validationTrialExtra is pushed (3 trials, user must end with top of red bar in target area, bounds are [70,90])
   validationTimeline.push({
-    ...validationTrialExtra(jsPsych, state, updateData),
+    ...validationTrialExtra(jsPsych, state, updateData, device),
     conditional_function() {
       return state.getState().validationState.extraValidationRequired;
     },

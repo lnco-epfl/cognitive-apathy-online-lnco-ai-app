@@ -18,7 +18,7 @@
   "PREMATURE_KEY_RELEASE_ERROR_MESSAGE": "You released the keys early!",
   "LIKERT_PREAMBLE_BLOCK": "During this last part of the experiment, how would you respond to the following question?",
   "LIKERT_PREAMBLE_DEMO": "During this last block of practice trials, how would you respond to the following question?",
-  "LIKERT_PREAMBLE_FINAL_QUESTIONS": "Regarding yourself now, how would you rate the following?",
+  "LIKERT_PREAMBLE_FINAL_QUESTIONS": "During this last part of the experiment, please rate your feelings on the following topics.",
   "FAILED_MINIMUM_DEMO_TAPS_MESSAGE": "You did not tap enough during the last practice trial. Please try again.",
   "HOLD_KEYS_MESSAGE": "<p>Hold the <b>{{KEYS_TO_HOLD_0}}</b>, <b>{{KEYS_TO_HOLD_1}}</b>, <b>{{KEYS_TO_HOLD_2}}</b>, <b>Spacebar</b> and <b>Right Arrow</b> keys!</p>",
   "KEY_TAPPED_EARLY_MESSAGE": "Key was tapped too early. Please wait for the appropriate time to press the key.",
@@ -47,7 +47,15 @@
     "NEUTRAL": "Neutral",
     "SOMEWHAT_AGREE": "Somewhat Agree",
     "AGREE": "Agree",
-    "STRONGLY_AGREE": "Strongly Agree"
+    "STRONGLY_AGREE": "Strongly Agree",
+    "LOW_ATTENTION": "No Attention",
+    "HIGH_ATTENTION": "Highest Attention",
+    "LOW_MOTIVATION": "No Motivation",
+    "HIGH_MOTIVATION": "Highest Motivation",
+    "LOW_FATIGUE": "No Fatigue",
+    "HIGH_FATIGUE": "Highest Fatigue",
+    "LOW_TIREDNESS": "No Tiredness",
+    "HIGH_TIREDNESS": "Highest Tiredness"
   },
   "LIKERT_SURVEY_1_QUESTIONS": {
     "QUESTION_1": "I felt I was in control of the bar's movement.",

@@ -7,6 +7,7 @@ import {
 } from '../jspsych/calibration-trial';
 import { ExperimentState } from '../jspsych/experiment-state-class';
 import { calibrationStimuliObject, videoStimulus } from '../jspsych/stimulus';
+import { DeviceType } from '../triggers/serialport';
 import {
   CALIBRATION_PART_1_DIRECTIONS,
   CALIBRATION_SECTION_MESSAGE,
@@ -83,6 +84,7 @@ export const buildCalibration = (
   jsPsych: JsPsych,
   state: ExperimentState,
   updateData: (data: DataCollection) => void,
+  device: DeviceType,
 ): Timeline => {
   const calibrationTimeline: Timeline = [];
 
@@ -99,6 +101,7 @@ export const buildCalibration = (
       state,
       CalibrationPartType.CalibrationPart1,
       updateData,
+      device,
     ),
   );
 
@@ -109,6 +112,7 @@ export const buildCalibration = (
       state,
       CalibrationPartType.CalibrationPart1,
       updateData,
+      device,
     ),
   );
 
@@ -124,6 +128,7 @@ export const buildCalibration = (
       state,
       CalibrationPartType.CalibrationPart2,
       updateData,
+      device,
     ),
   );
   // If the median tap count from calibrationTrialPart2 is less than MINIMUM_CALIBRATION_MEDIAN, conditionalCalibrationTrialPart2 is pushed (Warning so user taps faster, 3 trials, user taps as fast as possible, visual feedback)
@@ -134,6 +139,7 @@ export const buildCalibration = (
       state,
       CalibrationPartType.CalibrationPart2,
       updateData,
+      device,
     ),
   );
 
@@ -144,6 +150,7 @@ export const buildFinalCalibration = (
   jsPsych: JsPsych,
   state: ExperimentState,
   updateData: (data: DataCollection) => void,
+  device: DeviceType,
 ): Timeline => {
   const finalCalibrationTimeline: Timeline = [];
   // User is displayed instructions on how the final calibration part 1 trials will proceed
@@ -157,6 +164,7 @@ export const buildFinalCalibration = (
       state,
       CalibrationPartType.FinalCalibrationPart1,
       updateData,
+      device,
     ),
   );
   // User is displayed instructions on how the final calibration part 1 trials will proceed
@@ -170,6 +178,7 @@ export const buildFinalCalibration = (
       state,
       CalibrationPartType.FinalCalibrationPart2,
       updateData,
+      device,
     ),
   );
 

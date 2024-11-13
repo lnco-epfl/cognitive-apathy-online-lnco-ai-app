@@ -3,6 +3,7 @@ import { DataCollection, JsPsych } from 'jspsych';
 
 import { ExperimentState } from '../jspsych/experiment-state-class';
 import { generateTaskTrialBlock, generateTrialOrder } from '../jspsych/trials';
+import { DeviceType } from '../triggers/serialport';
 import {
   CONTINUE_BUTTON_MESSAGE,
   ENABLE_BUTTON_AFTER_TIME,
@@ -26,6 +27,7 @@ export const buildTaskCore = (
   jsPsych: JsPsych,
   state: ExperimentState,
   updateData: (data: DataCollection) => void,
+  device: DeviceType,
 ): Timeline => {
   const taskTimeline: Timeline = [];
 
@@ -34,7 +36,7 @@ export const buildTaskCore = (
   const trialBlock = generateTrialOrder(state);
   taskTimeline.push({
     timeline: trialBlock.map((delay: DelayType, index: number) =>
-      generateTaskTrialBlock(jsPsych, state, delay, index, updateData),
+      generateTaskTrialBlock(jsPsych, state, delay, index, updateData, device),
     ),
   });
 

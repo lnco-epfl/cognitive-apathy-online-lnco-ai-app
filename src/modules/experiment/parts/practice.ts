@@ -7,6 +7,8 @@ import { CountdownTrialPlugin } from '../trials/countdown-trial';
 import { loadingBarTrial } from '../trials/loading-bar-trial';
 import { releaseKeysStep } from '../trials/release-keys-trial';
 import TappingTask from '../trials/tapping-task-trial';
+import { DeviceType } from '../triggers/serialport';
+import { sendPhotoDiodeTrigger, sendSerialTrigger } from '../triggers/trigger';
 import {
   CONTINUE_BUTTON_MESSAGE,
   ENABLE_BUTTON_AFTER_TIME,
@@ -81,6 +83,7 @@ export const interactiveCountdown = (state: ExperimentState): Trial => ({
 export const practiceTrial = (
   jsPsych: JsPsych,
   state: ExperimentState,
+  device: DeviceType,
 ): Trial => ({
   timeline: [
     {
@@ -89,13 +92,14 @@ export const practiceTrial = (
       task: 'practice',
       usePhotoDiode: state.getGeneralSettings().usePhotoDiode,
       on_start(trial: Trial) {
-        /* Enable the photodiode trigger in case used */
-        const photoDiodeElement = document.getElementById(
-          'photo-diode-element',
-        );
-        if (photoDiodeElement) {
-          photoDiodeElement.className = `photo-diode photo-diode-white ${state.getGeneralSettings().usePhotoDiode}`;
+        if (device.device) {
+          sendSerialTrigger(device, {
+            outsideTask: true,
+            decisionTrigger: false,
+            isEnd: false,
+          });
         }
+        sendPhotoDiodeTrigger(state.getGeneralSettings().usePhotoDiode, false);
         // This code adds the key tapped early flag to the actual task in case it was tapped too early during countdown
         const keyTappedEarlyFlag = checkFlag(
           OtherTaskStagesType.Countdown,
@@ -106,13 +110,14 @@ export const practiceTrial = (
         trial.keyTappedEarlyFlag = keyTappedEarlyFlag;
       },
       on_finish() {
-        /* Disable the photodiode trigger in case used */
-        const photoDiodeElement = document.getElementById(
-          'photo-diode-element',
-        );
-        if (photoDiodeElement) {
-          photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+        if (device.device) {
+          sendSerialTrigger(device, {
+            outsideTask: true,
+            decisionTrigger: false,
+            isEnd: true,
+          });
         }
+        sendPhotoDiodeTrigger(state.getGeneralSettings().usePhotoDiode, true);
       },
     },
     {
@@ -142,13 +147,14 @@ export const practiceTrial = (
 export const practiceLoop = (
   jsPsych: JsPsych,
   state: ExperimentState,
+  device: DeviceType,
 ): Trial => ({
   timeline: [
     {
       // The general timeline of the practice loop with the interactive timeline, the actual trial and then the loading bar
       timeline: [
         interactiveCountdown(state),
-        practiceTrial(jsPsych, state),
+        practiceTrial(jsPsych, state, device),
         loadingBarTrial(true, jsPsych),
       ],
       // Repeat if the keys were released early, if user tapped before go, or didn't hit minimum required taps
@@ -193,6 +199,7 @@ export const practiceLoop = (
 export const buildPracticeTrials = (
   jsPsych: JsPsych,
   state: ExperimentState,
+  deviceInfo: DeviceType,
 ): Timeline => {
   const practiceTimeline: Timeline = [];
 
@@ -203,7 +210,7 @@ export const buildPracticeTrials = (
     i < state.getPracticeSettings().numberOfPracticeLoops;
     i += 1
   ) {
-    practiceTimeline.push(practiceLoop(jsPsych, state));
+    practiceTimeline.push(practiceLoop(jsPsych, state, deviceInfo));
   }
   return practiceTimeline;
 };

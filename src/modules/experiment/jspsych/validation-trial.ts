@@ -6,6 +6,8 @@ import { loadingBarTrial } from '../trials/loading-bar-trial';
 import { releaseKeysStep } from '../trials/release-keys-trial';
 import { successScreen } from '../trials/success-trial';
 import TaskPlugin from '../trials/tapping-task-trial';
+import { DeviceType } from '../triggers/serialport';
+import { sendPhotoDiodeTrigger, sendSerialTrigger } from '../triggers/trigger';
 import {
   AUTO_DECREASE_AMOUNT,
   AUTO_DECREASE_RATE,
@@ -17,6 +19,7 @@ import {
   TRIAL_DURATION,
 } from '../utils/constants';
 import {
+  BoundsType,
   OtherTaskStagesType,
   TaskTrialData,
   Trial,
@@ -37,6 +40,13 @@ const defaultValidationBounds = {
   [ValidationPartType.ValidationMedium]: [50, 70],
   [ValidationPartType.ValidationHard]: [70, 90],
   [ValidationPartType.ValidationExtra]: [70, 90],
+};
+
+const validationBoundsType = {
+  [ValidationPartType.ValidationEasy]: BoundsType.Easy,
+  [ValidationPartType.ValidationMedium]: BoundsType.Medium,
+  [ValidationPartType.ValidationHard]: BoundsType.Hard,
+  [ValidationPartType.ValidationExtra]: BoundsType.Hard,
 };
 
 /**
@@ -110,6 +120,7 @@ export const createValidationTrial = (
   jsPsych: JsPsych,
   state: ExperimentState,
   updateData: (data: DataCollection) => void,
+  device: DeviceType,
 ): Trial => ({
   timeline: [
     {
@@ -137,12 +148,18 @@ export const createValidationTrial = (
                 task: validationName,
               },
               on_start(trial: TaskTrialData) {
-                const photoDiodeElement = document.getElementById(
-                  'photo-diode-element',
-                );
-                if (photoDiodeElement) {
-                  photoDiodeElement.className = `photo-diode photo-diode-white ${state.getGeneralSettings().usePhotoDiode}`;
+                if (device.device) {
+                  sendSerialTrigger(device, {
+                    outsideTask: true,
+                    decisionTrigger: false,
+                    bounds: validationBoundsType[validationName],
+                    isEnd: false,
+                  });
                 }
+                sendPhotoDiodeTrigger(
+                  state.getGeneralSettings().usePhotoDiode,
+                  false,
+                );
                 const keyTappedEarlyFlag = checkFlag(
                   OtherTaskStagesType.Countdown,
                   'keyTappedEarlyFlag',
@@ -154,12 +171,18 @@ export const createValidationTrial = (
                 return keyTappedEarlyFlag;
               },
               on_finish(data: ValidationData) {
-                const photoDiodeElement = document.getElementById(
-                  'photo-diode-element',
-                );
-                if (photoDiodeElement) {
-                  photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+                if (device.device) {
+                  sendSerialTrigger(device, {
+                    outsideTask: true,
+                    decisionTrigger: false,
+                    bounds: validationBoundsType[validationName],
+                    isEnd: true,
+                  });
                 }
+                sendPhotoDiodeTrigger(
+                  state.getGeneralSettings().usePhotoDiode,
+                  true,
+                );
                 // eslint-disable-next-line no-param-reassign
                 data.task = validationName;
                 handleValidationFinish(data, validationName, state);
@@ -239,6 +262,7 @@ export const validationTrialExtra = (
   jsPsych: JsPsych,
   state: ExperimentState,
   updateData: (data: DataCollection) => void,
+  device: DeviceType,
 ): Trial => ({
   timeline: [
     createValidationTrial(
@@ -246,6 +270,7 @@ export const validationTrialExtra = (
       jsPsych,
       state,
       updateData,
+      device,
     ),
   ],
   on_timeline_finish() {

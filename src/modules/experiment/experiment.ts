@@ -19,6 +19,11 @@ import { buildPracticeTrials } from './parts/practice';
 import { buildTaskCore } from './parts/task-core';
 import { buildValidation } from './parts/validation';
 import './styles/main.scss';
+import {
+  DeviceType,
+  SerialPort,
+  deviceConnectPages,
+} from './triggers/serialport';
 import { PROGRESS_BAR } from './utils/constants';
 import { Timeline } from './utils/types';
 
@@ -38,6 +43,15 @@ export async function run({
 }): Promise<JsPsych> {
   // To do: Initiate a state based on 'input' containing all settings
   const state = new ExperimentState(input.settings);
+
+  // Pseudo state variable
+  const device: DeviceType = {
+    device: null,
+    sendTriggerFunction: async (
+      _device: SerialPort | null,
+      _trigger: number,
+    ) => {},
+  };
 
   if (state.getGeneralSettings().usePhotoDiode !== 'off') {
     const photoDiodeElement = document.createElement('div');
@@ -79,12 +93,19 @@ export async function run({
     max_load_time: 120000, // Allows program to load (arbitrary value currently)
   });
 
+  timeline.push(deviceConnectPages(jsPsych, device, true));
   timeline.push(buildIntroduction(jsPsych));
-  timeline.push(buildPracticeTrials(jsPsych, state));
-  timeline.push(buildCalibration(jsPsych, state, updateDataWithSettings));
-  timeline.push(buildValidation(jsPsych, state, updateDataWithSettings));
-  timeline.push(buildTaskCore(jsPsych, state, updateDataWithSettings));
-  timeline.push(buildFinalCalibration(jsPsych, state, updateDataWithSettings));
+  timeline.push(buildPracticeTrials(jsPsych, state, device));
+  timeline.push(
+    buildCalibration(jsPsych, state, updateDataWithSettings, device),
+  );
+  timeline.push(
+    buildValidation(jsPsych, state, updateDataWithSettings, device),
+  );
+  timeline.push(buildTaskCore(jsPsych, state, updateDataWithSettings, device));
+  timeline.push(
+    buildFinalCalibration(jsPsych, state, updateDataWithSettings, device),
+  );
 
   // User clicks continue to download experiment data locally
   timeline.push(finishExperiment(jsPsych, updateDataWithSettings));
