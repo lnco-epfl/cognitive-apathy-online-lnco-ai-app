@@ -70,7 +70,7 @@ export const sendSerialTrigger = (
   device.sendTriggerFunction(device, message);
   setTimeout(() => {
     device.sendTriggerFunction(device, 0);
-  }, 500);
+  }, 100);
 };
 
 export const sendPhotoDiodeTrigger = (
@@ -85,17 +85,17 @@ export const sendPhotoDiodeTrigger = (
     if (photoDiodeElement) {
       photoDiodeElement.className = `photo-diode photo-diode-black ${photoDiodeSetting}`;
     }
-  }, 500);
+  }, 100);
   if (isEnd) {
     setTimeout(() => {
       if (photoDiodeElement) {
         photoDiodeElement.className = `photo-diode photo-diode-white ${photoDiodeSetting}`;
       }
-    }, 1000);
+    }, 200);
     setTimeout(() => {
       if (photoDiodeElement) {
         photoDiodeElement.className = `photo-diode photo-diode-black ${photoDiodeSetting}`;
       }
-    }, 1500);
+    }, 300);
   }
 };
