@@ -6,6 +6,7 @@ import { handTutorial, noStimuliVideo } from '../jspsych/stimulus';
 import { CountdownTrialPlugin } from '../trials/countdown-trial';
 import { loadingBarTrial } from '../trials/loading-bar-trial';
 import { releaseKeysStep } from '../trials/release-keys-trial';
+import SuccessScreenPlugin from '../trials/success-trial';
 import TappingTask from '../trials/tapping-task-trial';
 import { DeviceType } from '../triggers/serialport';
 import { sendPhotoDiodeTrigger, sendSerialTrigger } from '../triggers/trigger';
@@ -15,6 +16,7 @@ import {
   INTERACTIVE_KEYBOARD_TUTORIAL_MESSAGE,
   MINIMUM_CALIBRATION_MEDIAN,
   PROGRESS_BAR,
+  SUCCESS_SCREEN_DURATION,
 } from '../utils/constants';
 import { OtherTaskStagesType, Timeline, Trial } from '../utils/types';
 import {
@@ -49,8 +51,6 @@ export const noStimuliVideoTutorialTrial = (jsPsych: JsPsych): Trial => ({
     // Clear the display element
     // eslint-disable-next-line no-param-reassign
     jsPsych.getDisplayElement().innerHTML = '';
-    // Change progress bar
-    changeProgressBar(PROGRESS_BAR.PROGRESS_BAR_PRACTICE, 0.02, jsPsych);
   },
 });
 
@@ -128,6 +128,31 @@ export const practiceTrial = (
     },
   ],
 });
+
+export const successScreen = (jsPsych: JsPsych): Trial => ({
+  type: SuccessScreenPlugin,
+  task: 'success',
+  success() {
+    const keyTappedEarlyFlag = checkFlag(
+      OtherTaskStagesType.Countdown,
+      'keyTappedEarlyFlag',
+      jsPsych,
+    );
+    const keysReleasedFlag = checkFlag(
+      OtherTaskStagesType.Practice,
+      'keysReleasedFlag',
+      jsPsych,
+    );
+    const numberOfTaps = checkTaps(OtherTaskStagesType.Practice, jsPsych);
+    return (
+      !keysReleasedFlag &&
+      !keyTappedEarlyFlag &&
+      numberOfTaps >= MINIMUM_CALIBRATION_MEDIAN
+    );
+  },
+  trial_duration: SUCCESS_SCREEN_DURATION,
+});
+
 /**
  * @function practiceLoop
  * @description Creates a loop of practice trials where participants must repeatedly complete practice tasks until they meet the required criteria.
@@ -155,6 +180,7 @@ export const practiceLoop = (
       timeline: [
         interactiveCountdown(state),
         practiceTrial(jsPsych, state, device),
+        successScreen(jsPsych),
         loadingBarTrial(true, jsPsych),
       ],
       // Repeat if the keys were released early, if user tapped before go, or didn't hit minimum required taps

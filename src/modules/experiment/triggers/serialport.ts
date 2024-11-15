@@ -213,6 +213,10 @@ export const deviceConnectPages = (
             },
           },
         ],
+        // Conditional trial section should only occur if the corresponding calibration part failed due to minimum taps previously
+        conditional_function() {
+          return deviceInfo.device !== null;
+        },
         repetitions: 3,
       },
     ],

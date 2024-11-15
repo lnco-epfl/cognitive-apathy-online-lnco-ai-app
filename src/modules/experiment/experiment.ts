@@ -93,8 +93,8 @@ export async function run({
     max_load_time: 120000, // Allows program to load (arbitrary value currently)
   });
 
-  timeline.push(deviceConnectPages(jsPsych, device, true));
-  timeline.push(buildIntroduction(jsPsych));
+  timeline.push(deviceConnectPages(jsPsych, device, false));
+  timeline.push(buildIntroduction());
   timeline.push(buildPracticeTrials(jsPsych, state, device));
   timeline.push(
     buildCalibration(jsPsych, state, updateDataWithSettings, device),
