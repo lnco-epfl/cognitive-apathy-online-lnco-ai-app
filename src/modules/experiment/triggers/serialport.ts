@@ -217,7 +217,7 @@ export const deviceConnectPages = (
         conditional_function() {
           return deviceInfo.device !== null;
         },
-        repetitions: 3,
+        repetitions: 1,
       },
     ],
   };
