@@ -11,6 +11,7 @@ import {
 
 export type GeneralSettingsType = {
   usePhotoDiode: 'top-left' | 'top-right' | 'off';
+  fontSize: 'small' | 'normal' | 'large' | 'extra-large';
 };
 
 export type PracticeSettingsType = {
@@ -51,6 +52,7 @@ export type AllSettingsType = {
 const defaultSettingsValues: AllSettingsType = {
   generalSettings: {
     usePhotoDiode: 'off',
+    fontSize: 'normal',
   },
   practiceSettings: {
     numberOfPracticeLoops: 0,

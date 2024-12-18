@@ -9,6 +9,42 @@ body {
   }
 }
 
+/* Base font sizes for different classes */
+[data-font-size='small'] {
+  --font-scale: 0.8;
+}
+
+[data-font-size='normal'] {
+  --font-scale: 1;
+}
+
+[data-font-size='large'] {
+  --font-scale: 1.2;
+}
+
+[data-font-size='extra-large'] {
+  --font-scale: 1.5;
+}
+
+/* Apply font-size scaling to elements */
+[data-font-size] h1 {
+  font-size: calc(var(--font-scale) * 2.5rem);
+}
+
+[data-font-size] h2 {
+  font-size: calc(var(--font-scale) * 2rem);
+}
+
+[data-font-size] p {
+  font-size: calc(var(--font-scale) * 1rem);
+}
+
+[data-font-size] span {
+  font-size: calc(var(--font-scale) * 0.9rem);
+}
+
+/* Add more element styles as needed */
+
 .jspsych-display-element {
   background-color: #fffefe;
   display: flex;
@@ -19,6 +55,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-size: calc(var(--font-scale) * 1rem);
 }
 
 .jspsych-content-wrapper {
@@ -70,20 +107,27 @@ body {
   line-height: 1em;
   position: absolute;
   top: 0px;
-  height: 50px;
+  height: calc(var(--font-scale) * 50px);
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-family: Nunito, Roboto, sans-serif;
 }
+
+.custom-dropdown {
+  font-family: Nunito, Roboto, sans-serif;
+  font-size: calc(var(--font-scale) * 1rem);
+}
+
 #jspsych-progressbar-container span {
-  font-size: 14px;
   padding-right: 14px;
 }
+
 #jspsych-progressbar-outer {
   background-color: #a2a2a2;
   width: 50%;
-  height: 20px;
+  height: calc(var(--font-scale) * 20px);
   display: inline-block;
   vertical-align: middle;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -114,7 +158,7 @@ body {
 }
 
 .percentage {
-  font-size: 12px;
+  font-size: calc(var(--font-scale) * 1rem);
 }
 
 .percentage:after {
@@ -127,7 +171,7 @@ body {
 
 #clock {
   display: block; /* Ensure it is displayed as a block element */
-  font-size: 2em; /* Make the font size larger */
+  font-size: calc(var(--font-scale) * 1rem);
   margin-top: 10px; /* Add some space above the clock */
 }
 
@@ -206,7 +250,7 @@ ul li {
   color: white;
   border: none;
   padding: 5px;
-  font-size: 1rem;
+  font-size: calc(var(--font-scale) * 1rem);
   padding: 6px 16px;
   line-height: 1.75;
   min-width: 64px;

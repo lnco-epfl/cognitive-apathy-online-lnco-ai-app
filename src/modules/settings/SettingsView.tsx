@@ -95,6 +95,37 @@ const SettingsView: FC = () => {
           />
           <FormControlLabel value="off" control={<Radio />} label="off" />
         </RadioGroup>
+        <Stack spacing={0}>
+          <Typography variant="body1">
+            Set the font size of the experiment
+          </Typography>
+        </Stack>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue="random"
+          name="radio-buttons-group"
+          row
+          value={generalSettings.fontSize}
+          onChange={(e) =>
+            updateGeneralSettings({
+              ...generalSettings,
+              fontSize: e.target.value as
+                | 'small'
+                | 'normal'
+                | 'large'
+                | 'extra-large',
+            })
+          }
+        >
+          <FormControlLabel value="small" control={<Radio />} label="Small" />
+          <FormControlLabel value="normal" control={<Radio />} label="Normal" />
+          <FormControlLabel value="large" control={<Radio />} label="Large" />
+          <FormControlLabel
+            value="extra-large"
+            control={<Radio />}
+            label="Extra Large"
+          />
+        </RadioGroup>
       </Stack>
       <Stack spacing={1}>
         <Typography variant="h6">Practice</Typography>

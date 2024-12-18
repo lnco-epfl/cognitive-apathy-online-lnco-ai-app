@@ -62,6 +62,18 @@ export async function run({
       ?.appendChild(photoDiodeElement);
   }
 
+  if (state.getGeneralSettings().fontSize) {
+    const jspsychDisplayElement = document.getElementById(
+      'jspsych-display-element',
+    );
+    if (jspsychDisplayElement) {
+      jspsychDisplayElement.setAttribute(
+        'data-font-size',
+        state.getGeneralSettings().fontSize,
+      );
+    }
+  }
+
   const updateDataWithSettings = (data: DataCollection): void => {
     updateData(data, input.settings);
   };
@@ -71,6 +83,40 @@ export async function run({
     auto_update_progress_bar: false,
     message_progress_bar: PROGRESS_BAR.PROGRESS_BAR_INTRODUCTION,
     display_element: 'jspsych-display-element',
+    on_trial_start() {
+      // Add dropdown when the trial starts
+      const progressBar = document.getElementById(
+        'jspsych-progressbar-container',
+      );
+      if (progressBar && !document.querySelector('.custom-dropdown')) {
+        // Create dropdown element
+        const dropdown = document.createElement('select');
+        dropdown.className = 'custom-dropdown';
+        dropdown.innerHTML = `
+          <option value="small" ${state.getGeneralSettings().fontSize === 'small' ? 'selected' : ''}>Small</option>
+          <option value="normal" ${state.getGeneralSettings().fontSize === 'normal' ? 'selected' : ''}>Normal</option>
+          <option value="large" ${state.getGeneralSettings().fontSize === 'large' ? 'selected' : ''}>Large</option>
+          <option value="extra-large" ${state.getGeneralSettings().fontSize === 'extra-large' ? 'selected' : ''}>Extra Large</option>
+        `;
+        const fontSizeTitle = document.createElement('span');
+        fontSizeTitle.innerHTML = 'Font Size:';
+        fontSizeTitle.style.marginLeft = '10px'; // Add some spacing
+        progressBar.appendChild(fontSizeTitle);
+        progressBar.appendChild(dropdown);
+
+        // Handle dropdown change
+        dropdown.addEventListener('change', (event) => {
+          const { target } = event;
+          const jspsychDisplayElement = document.getElementById(
+            'jspsych-display-element',
+          );
+          if (jspsychDisplayElement && target instanceof HTMLSelectElement) {
+            jspsychDisplayElement.setAttribute('data-font-size', target.value);
+          }
+          // Add custom logic for dropdown changes
+        });
+      }
+    },
     /* on_finish: (): void => {
       // const resultData = jsPsych.data.get();
       // onFinish(resultData);

@@ -129,6 +129,7 @@ export class ExperimentState {
     this.settings = {
       generalSettings: {
         usePhotoDiode: settingsVariables.generalSettings.usePhotoDiode || 'off',
+        fontSize: settingsVariables.generalSettings.fontSize || 'normal',
       },
       practiceSettings: {
         numberOfPracticeLoops:
@@ -254,6 +255,14 @@ export class ExperimentState {
   // Update to say that the validation has been completed successfully
   setValidationSuccess(successful: boolean): void {
     this.state.validationState.validationSuccess = successful;
+  }
+
+  setFontSize(fontSize: string): void {
+    this.settings.generalSettings.fontSize = fontSize as
+      | 'small'
+      | 'normal'
+      | 'large'
+      | 'extra-large';
   }
 
   // Increment demo trial successes
