@@ -146,7 +146,9 @@ const generateTaskTrial = (
           isEnd: false,
         });
       }
+      
       sendPhotoDiodeTrigger(state.getPhotoDiodeSettings().usePhotoDiode, true);
+      
       const keyTappedEarlyFlag = checkFlag(
         OtherTaskStagesType.Countdown,
         'keyTappedEarlyFlag',
@@ -167,7 +169,9 @@ const generateTaskTrial = (
           isEnd: true,
         });
       }
+
       sendPhotoDiodeTrigger(state.getPhotoDiodeSettings().usePhotoDiode, true);
+
       if (demo) {
         // eslint-disable-next-line no-param-reassign
         data.minimumTapsReached = data.tapCount > MINIMUM_DEMO_TAPS;

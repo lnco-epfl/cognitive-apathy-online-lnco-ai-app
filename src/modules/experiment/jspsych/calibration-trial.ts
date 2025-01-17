@@ -118,7 +118,9 @@ const calibrationTrialBody = ({
         isEnd: false,
       });
     }
+
     sendPhotoDiodeTrigger(state.getPhotoDiodeSettings().usePhotoDiode, false);
+
     const keyTappedEarlyFlag = checkFlag(
       OtherTaskStagesType.Countdown,
       'keyTappedEarlyFlag',
@@ -139,7 +141,9 @@ const calibrationTrialBody = ({
         isEnd: true,
       });
     }
+
     sendPhotoDiodeTrigger(state.getPhotoDiodeSettings().usePhotoDiode, true);
+
     if (
       !data.keysReleasedFlag &&
       !data.keyTappedEarlyFlag &&

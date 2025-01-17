@@ -208,9 +208,11 @@ export async function run({
       addFullscreenButton();
     },
   });
+
   if (state.getGeneralSettings().useDevice) {
     timeline.push(deviceConnectPages(jsPsych, device, false));
   }
+
   timeline.push(buildIntroduction());
   timeline.push(buildPracticeTrials(jsPsych, state, device));
   timeline.push(
