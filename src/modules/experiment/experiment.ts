@@ -53,13 +53,37 @@ export async function run({
     ) => {},
   };
 
-  if (state.getGeneralSettings().usePhotoDiode !== 'off') {
+  if (state.getPhotoDiodeSettings().usePhotoDiode !== 'off') {
     const photoDiodeElement = document.createElement('div');
     photoDiodeElement.id = 'photo-diode-element';
-    photoDiodeElement.className = `photo-diode photo-diode-black ${state.getGeneralSettings().usePhotoDiode}`;
+    photoDiodeElement.className = `photo-diode photo-diode-black ${state.getPhotoDiodeSettings().usePhotoDiode} ${state.getPhotoDiodeSettings().testPhotoDiode ? 'photo-diode-test' : ''}`;
     document
       .getElementById('jspsych-display-element')
       ?.appendChild(photoDiodeElement);
+    if (state.getPhotoDiodeSettings().usePhotoDiode === 'customize') {
+      const left = state.getPhotoDiodeSettings().photoDiodeLeft;
+      const top = state.getPhotoDiodeSettings().photoDiodeTop;
+      const width = state.getPhotoDiodeSettings().photoDiodeWidth;
+      const height = state.getPhotoDiodeSettings().photoDiodeHeight;
+      if (photoDiodeElement && left && top && width && height) {
+        photoDiodeElement.style.setProperty('--photodiode-left', left);
+        photoDiodeElement.style.setProperty('--photodiode-top', top);
+        photoDiodeElement.style.setProperty('--photodiode-width', width);
+        photoDiodeElement.style.setProperty('--photodiode-height', height);
+      }
+    }
+  }
+
+  if (state.getGeneralSettings().fontSize) {
+    const jspsychDisplayElement = document.getElementById(
+      'jspsych-display-element',
+    );
+    if (jspsychDisplayElement) {
+      jspsychDisplayElement.setAttribute(
+        'data-font-size',
+        state.getGeneralSettings().fontSize,
+      );
+    }
   }
 
   if (state.getGeneralSettings().fontSize) {
@@ -78,45 +102,87 @@ export async function run({
     updateData(data, input.settings);
   };
 
-  const jsPsych = initJsPsych({
-    show_progress_bar: true,
-    auto_update_progress_bar: false,
-    message_progress_bar: PROGRESS_BAR.PROGRESS_BAR_INTRODUCTION,
-    display_element: 'jspsych-display-element',
-    on_trial_start() {
-      // Add dropdown when the trial starts
-      const progressBar = document.getElementById(
-        'jspsych-progressbar-container',
-      );
-      if (progressBar && !document.querySelector('.custom-dropdown')) {
-        // Create dropdown element
-        const dropdown = document.createElement('select');
-        dropdown.className = 'custom-dropdown';
-        dropdown.innerHTML = `
+  // Function to create the re-enter fullscreen button
+  const addFullscreenButton = (): void => {
+    // Select the progress bar container
+    const progressBarContainer = document.getElementById(
+      'jspsych-progressbar-container',
+    );
+
+    if (progressBarContainer) {
+      // Create a button element
+      const fullscreenButton = document.createElement('button');
+      fullscreenButton.textContent = 'Fullscreen';
+      fullscreenButton.className = 'jspsych-btn-progress-bar';
+      fullscreenButton.style.marginLeft = '10px'; // Style it as needed
+      fullscreenButton.style.cursor = 'pointer';
+
+      // Add an event listener to the button
+      fullscreenButton.addEventListener('click', () => {
+        const docEl = document.documentElement as HTMLElement & {
+          mozRequestFullScreen?: () => Promise<void>;
+          webkitRequestFullscreen?: () => Promise<void>;
+          msRequestFullscreen?: () => Promise<void>;
+        };
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen();
+        } else if (docEl.mozRequestFullScreen) {
+          // Firefox
+          docEl.mozRequestFullScreen();
+        } else if (docEl.webkitRequestFullscreen) {
+          // Chrome, Safari, and Opera
+          docEl.webkitRequestFullscreen();
+        } else if (docEl.msRequestFullscreen) {
+          // IE/Edge
+          docEl.msRequestFullscreen();
+        }
+      });
+
+      // Append the button to the progress bar container
+      progressBarContainer.appendChild(fullscreenButton);
+    }
+  };
+
+  const addFontSizeMenu = (): void => {
+    // Add dropdown when the trial starts
+    const progressBar = document.getElementById(
+      'jspsych-progressbar-container',
+    );
+    if (progressBar && !document.querySelector('.custom-dropdown')) {
+      // Create dropdown element
+      const dropdown = document.createElement('select');
+      dropdown.className = 'custom-dropdown';
+      dropdown.innerHTML = `
           <option value="small" ${state.getGeneralSettings().fontSize === 'small' ? 'selected' : ''}>Small</option>
           <option value="normal" ${state.getGeneralSettings().fontSize === 'normal' ? 'selected' : ''}>Normal</option>
           <option value="large" ${state.getGeneralSettings().fontSize === 'large' ? 'selected' : ''}>Large</option>
           <option value="extra-large" ${state.getGeneralSettings().fontSize === 'extra-large' ? 'selected' : ''}>Extra Large</option>
         `;
-        const fontSizeTitle = document.createElement('span');
-        fontSizeTitle.innerHTML = 'Font Size:';
-        fontSizeTitle.style.marginLeft = '10px'; // Add some spacing
-        progressBar.appendChild(fontSizeTitle);
-        progressBar.appendChild(dropdown);
+      const fontSizeTitle = document.createElement('span');
+      fontSizeTitle.innerHTML = 'Font Size:';
+      fontSizeTitle.style.marginLeft = '10px'; // Add some spacing
+      progressBar.appendChild(fontSizeTitle);
+      progressBar.appendChild(dropdown);
 
-        // Handle dropdown change
-        dropdown.addEventListener('change', (event) => {
-          const { target } = event;
-          const jspsychDisplayElement = document.getElementById(
-            'jspsych-display-element',
-          );
-          if (jspsychDisplayElement && target instanceof HTMLSelectElement) {
-            jspsychDisplayElement.setAttribute('data-font-size', target.value);
-          }
-          // Add custom logic for dropdown changes
-        });
-      }
-    },
+      // Handle dropdown change
+      dropdown.addEventListener('change', (event) => {
+        const { target } = event;
+        const jspsychDisplayElement = document.getElementById(
+          'jspsych-display-element',
+        );
+        if (jspsychDisplayElement && target instanceof HTMLSelectElement) {
+          jspsychDisplayElement.setAttribute('data-font-size', target.value);
+        }
+        // Add custom logic for dropdown changes
+      });
+    }
+  };
+
+  const jsPsych = initJsPsych({
+    show_progress_bar: true,
+    auto_update_progress_bar: false,
+    message_progress_bar: PROGRESS_BAR.PROGRESS_BAR_INTRODUCTION,
+    display_element: 'jspsych-display-element',
     /* on_finish: (): void => {
       // const resultData = jsPsych.data.get();
       // onFinish(resultData);
@@ -137,9 +203,14 @@ export async function run({
     type: PreloadPlugin,
     assetPaths,
     max_load_time: 120000, // Allows program to load (arbitrary value currently)
+    on_load() {
+      addFontSizeMenu();
+      addFullscreenButton();
+    },
   });
-
-  timeline.push(deviceConnectPages(jsPsych, device, false));
+  if (state.getGeneralSettings().useDevice) {
+    timeline.push(deviceConnectPages(jsPsych, device, false));
+  }
   timeline.push(buildIntroduction());
   timeline.push(buildPracticeTrials(jsPsych, state, device));
   timeline.push(

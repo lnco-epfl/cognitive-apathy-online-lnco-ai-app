@@ -11,11 +11,11 @@ body {
 
 /* Base font sizes for different classes */
 [data-font-size='small'] {
-  --font-scale: 0.8;
+  --font-scale: 0.6;
 }
 
 [data-font-size='normal'] {
-  --font-scale: 1;
+  --font-scale: 0.8;
 }
 
 [data-font-size='large'] {
@@ -59,10 +59,10 @@ body {
 }
 
 .jspsych-content-wrapper {
-  margin: 50px 0;
+  margin: calc(var(--font-scale) * 55px) 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   height: 100%;
 }
@@ -70,13 +70,17 @@ body {
 .jspsych-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   height: 100%;
   width: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
   gap: 5px;
+}
+
+#jspsych-html-button-response-stimulus {
+  max-width: 70vw;
 }
 
 #thermometer {
@@ -167,6 +171,13 @@ body {
 
 .hg-activeButton {
   background-color: blue;
+}
+
+.video-div {
+  margin: 0 auto;
+  width: calc(var(--font-scale) * 60%);
+  max-width: 100%;
+  background-color: #fff;
 }
 
 #clock {
@@ -263,6 +274,21 @@ ul li {
   text-align: center;
 }
 
+.jspsych-btn-progress-bar {
+  background-color: white;
+  color: #000;
+  border: none;
+  font-size: calc(var(--font-scale) * 1rem);
+  padding: 2px 4px;
+  line-height: 1.2;
+  border-radius: 4px;
+  box-shadow:
+    0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
 /** PhotoDiode class **/
 .photo-diode {
   width: 50px;
@@ -282,6 +308,14 @@ ul li {
   top: 0px;
 }
 
+.customize {
+  position: absolute;
+  left: var(--photodiode-left);
+  top: var(--photodiode-top);
+  width: var(--photodiode-width);
+  height: var(--photodiode-height);
+}
+
 .photo-diode-hide {
   display: none;
 }
@@ -293,4 +327,8 @@ ul li {
 .photo-diode-white {
   background-color: #fff;
   z-index: 5;
+}
+
+.photo-diode-test {
+  background-color: #ff0000;
 }

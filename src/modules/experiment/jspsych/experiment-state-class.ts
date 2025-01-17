@@ -7,6 +7,7 @@ import {
   AllSettingsType,
   CalibrationSettingsType,
   GeneralSettingsType,
+  PhotoDiodeSettings,
   PracticeSettingsType,
   TaskSettingsType,
   ValidationSettingsType,
@@ -128,8 +129,8 @@ export class ExperimentState {
     };
     this.settings = {
       generalSettings: {
-        usePhotoDiode: settingsVariables.generalSettings.usePhotoDiode || 'off',
         fontSize: settingsVariables.generalSettings.fontSize || 'normal',
+        useDevice: settingsVariables.generalSettings.useDevice || false,
       },
       practiceSettings: {
         numberOfPracticeLoops:
@@ -174,6 +175,20 @@ export class ExperimentState {
         taskPermutationRepetitions: 1,
         randomSkipChance: 0,
       },
+      photoDiodeSettings: {
+        usePhotoDiode:
+          settingsVariables.photoDiodeSettings.usePhotoDiode || 'off',
+        photoDiodeLeft:
+          settingsVariables.photoDiodeSettings.photoDiodeLeft || undefined,
+        photoDiodeTop:
+          settingsVariables.photoDiodeSettings.photoDiodeTop || undefined,
+        photoDiodeWidth:
+          settingsVariables.photoDiodeSettings.photoDiodeWidth || undefined,
+        photoDiodeHeight:
+          settingsVariables.photoDiodeSettings.photoDiodeHeight || undefined,
+        testPhotoDiode:
+          settingsVariables.photoDiodeSettings.testPhotoDiode || undefined,
+      },
     };
   }
 
@@ -217,6 +232,10 @@ export class ExperimentState {
         delaySortOrder,
       ),
     };
+  }
+
+  getPhotoDiodeSettings(): PhotoDiodeSettings {
+    return this.settings.photoDiodeSettings;
   }
 
   getCurrentSuccesses = (calibrationPart: CalibrationPartType): number =>

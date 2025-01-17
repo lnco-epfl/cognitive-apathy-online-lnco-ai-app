@@ -141,7 +141,7 @@ export const noStimuliVideo = `
     </p>
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
-    <div style="width: 60%; max-width: 550px; height: auto; background-color: rgb(255, 255, 255);">
+    <div class="video-div">
       <video
         id="videoTutorial"
         title="Tutorial Video"

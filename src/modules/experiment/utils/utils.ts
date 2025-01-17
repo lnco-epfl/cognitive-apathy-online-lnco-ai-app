@@ -1,6 +1,8 @@
 import { JsPsych } from 'jspsych';
+import { mean } from 'lodash';
 
-import { BOUNDS_DEFINITIONS } from './constants';
+import { type ExperimentState } from '../jspsych/experiment-state-class';
+import { BOUNDS_DEFINITIONS, REWARD_DEFINITIONS } from './constants';
 import {
   BoundsType,
   CalibrationPartType,
@@ -185,6 +187,28 @@ export function calculateTotalReward(jsPsych: JsPsych): number {
   return successfulTrials
     .select('reward')
     .sum() /* +accceptedSkippedTrials.select('reward').sum() */;
+}
+
+/**
+ * @function calculateTotalReward
+ * @description Calculates the total accumulated reward from successful trials. The commented out code is useful to calculate the rewards including skipped trials if random chance is implemented
+ *
+ * @param {JsPsych} jsPsych - The jsPsych instance used to control the experiment's flow.
+ * @returns {number} - The total accumulated reward from successful trials.
+ */
+export function calculateTotalPoints(state: ExperimentState): number {
+  const totalTrial =
+    state.getTaskSettings().taskBlockRepetitions *
+    state.getTaskSettings().taskBlocksIncluded.length *
+    state.getTaskSettings().taskBoundsIncluded.length *
+    state.getTaskSettings().taskRewardsIncluded.length *
+    state.getTaskSettings().taskPermutationRepetitions;
+  const averageReward = mean(
+    state
+      .getTaskSettings()
+      .taskRewardsIncluded.map((reward) => mean(REWARD_DEFINITIONS[reward])),
+  );
+  return totalTrial * averageReward;
 }
 
 /**

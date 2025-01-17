@@ -62,7 +62,7 @@ export const interactiveCountdown = (state: ExperimentState): Trial => ({
   type: CountdownTrialPlugin,
   message: INTERACTIVE_KEYBOARD_TUTORIAL_MESSAGE,
   showKeyboard: true,
-  usePhotoDiode: state.getGeneralSettings().usePhotoDiode,
+  usePhotoDiode: state.getPhotoDiodeSettings().usePhotoDiode,
   data: {
     task: 'countdown',
   },
@@ -90,7 +90,7 @@ export const practiceTrial = (
       type: TappingTask,
       showThermometer: false,
       task: 'practice',
-      usePhotoDiode: state.getGeneralSettings().usePhotoDiode,
+      usePhotoDiode: state.getPhotoDiodeSettings().usePhotoDiode,
       on_start(trial: Trial) {
         if (device.device) {
           sendSerialTrigger(device, {
@@ -99,7 +99,10 @@ export const practiceTrial = (
             isEnd: false,
           });
         }
-        sendPhotoDiodeTrigger(state.getGeneralSettings().usePhotoDiode, false);
+        sendPhotoDiodeTrigger(
+          state.getPhotoDiodeSettings().usePhotoDiode,
+          false,
+        );
         // This code adds the key tapped early flag to the actual task in case it was tapped too early during countdown
         const keyTappedEarlyFlag = checkFlag(
           OtherTaskStagesType.Countdown,
@@ -117,7 +120,10 @@ export const practiceTrial = (
             isEnd: true,
           });
         }
-        sendPhotoDiodeTrigger(state.getGeneralSettings().usePhotoDiode, true);
+        sendPhotoDiodeTrigger(
+          state.getPhotoDiodeSettings().usePhotoDiode,
+          true,
+        );
       },
     },
     {

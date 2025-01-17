@@ -10,8 +10,8 @@ import {
 } from '../experiment/utils/types';
 
 export type GeneralSettingsType = {
-  usePhotoDiode: 'top-left' | 'top-right' | 'off';
   fontSize: 'small' | 'normal' | 'large' | 'extra-large';
+  useDevice: boolean;
 };
 
 export type PracticeSettingsType = {
@@ -40,6 +40,15 @@ export type TaskSettingsType = {
   randomSkipChance: number;
 };
 
+export type PhotoDiodeSettings = {
+  usePhotoDiode: 'top-left' | 'top-right' | 'customize' | 'off';
+  photoDiodeLeft?: string;
+  photoDiodeTop?: string;
+  photoDiodeHeight?: string;
+  photoDiodeWidth?: string;
+  testPhotoDiode?: boolean;
+};
+
 // mapping between Setting names and their data type
 export type AllSettingsType = {
   generalSettings: GeneralSettingsType;
@@ -47,12 +56,13 @@ export type AllSettingsType = {
   calibrationSettings: CalibrationSettingsType;
   validationSettings: ValidationSettingsType;
   taskSettings: TaskSettingsType;
+  photoDiodeSettings: PhotoDiodeSettings;
 };
 // default values for the data property of settings by name
 const defaultSettingsValues: AllSettingsType = {
   generalSettings: {
-    usePhotoDiode: 'off',
     fontSize: 'normal',
+    useDevice: false,
   },
   practiceSettings: {
     numberOfPracticeLoops: 0,
@@ -79,6 +89,9 @@ const defaultSettingsValues: AllSettingsType = {
     taskRewardsIncluded: [RewardType.Low, RewardType.High],
     randomSkipChance: 0,
   },
+  photoDiodeSettings: {
+    usePhotoDiode: 'off',
+  },
 };
 
 // list of the settings names
@@ -88,6 +101,7 @@ const ALL_SETTING_NAMES = [
   'calibrationSettings',
   'validationSettings',
   'taskSettings',
+  'photoDiodeSettings',
 ] as const;
 
 // automatically generated types

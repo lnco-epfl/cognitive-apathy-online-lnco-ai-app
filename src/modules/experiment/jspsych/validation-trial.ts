@@ -157,7 +157,7 @@ export const createValidationTrial = (
                   });
                 }
                 sendPhotoDiodeTrigger(
-                  state.getGeneralSettings().usePhotoDiode,
+                  state.getPhotoDiodeSettings().usePhotoDiode,
                   false,
                 );
                 const keyTappedEarlyFlag = checkFlag(
@@ -180,7 +180,7 @@ export const createValidationTrial = (
                   });
                 }
                 sendPhotoDiodeTrigger(
-                  state.getGeneralSettings().usePhotoDiode,
+                  state.getPhotoDiodeSettings().usePhotoDiode,
                   true,
                 );
                 // eslint-disable-next-line no-param-reassign
