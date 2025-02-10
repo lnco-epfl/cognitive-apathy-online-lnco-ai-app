@@ -27,7 +27,7 @@ export const DELAY_DEFINITIONS: { [key in DelayType]: [number, number] } = {
 
 export const BOUNDS_DEFINITIONS: { [key in BoundsType]: [number, number] } = {
   [BoundsType.Easy]: [20, 40],
-  [BoundsType.Medium]: [50, 70],
+  [BoundsType.Medium]: [45, 65],
   [BoundsType.Hard]: [70, 90],
 };
 
