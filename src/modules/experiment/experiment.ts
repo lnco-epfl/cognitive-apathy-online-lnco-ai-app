@@ -204,7 +204,6 @@ export async function run({
     assetPaths,
     max_load_time: 120000, // Allows program to load (arbitrary value currently)
     on_load() {
-      addFontSizeMenu();
       addFullscreenButton();
     },
   });
