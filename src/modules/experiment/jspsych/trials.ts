@@ -146,9 +146,9 @@ const generateTaskTrial = (
           isEnd: false,
         });
       }
-      
+
       sendPhotoDiodeTrigger(state.getPhotoDiodeSettings().usePhotoDiode, true);
-      
+
       const keyTappedEarlyFlag = checkFlag(
         OtherTaskStagesType.Countdown,
         'keyTappedEarlyFlag',

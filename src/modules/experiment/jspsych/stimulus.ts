@@ -70,8 +70,8 @@ export function stimulus(
        <p style="font-size: 48px; position: absolute;">+</p>
      </div>`;
   return `
-      <div id="go-message" style="position: absolute; top: 10%; font-size: 160px; color: green; visibility: hidden; transform: translateX(-50%); left: 50%; white-space: nowrap;">${GO_MESSAGE}</div>
-      <div id="task-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; padding: 0 200px;">
+      <div id="go-message" style="position: absolute; top:8%; font-size: 140px; color: green; visibility: hidden; transform: translateX(-50%); left: 50%; white-space: nowrap;">${GO_MESSAGE}</div>
+      <div id="task-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 60px 200px;">
         <div style="display: flex; align-items: center; position: relative;">
           ${targetAreaText}
           ${thermometer}

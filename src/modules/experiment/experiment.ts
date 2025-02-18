@@ -26,6 +26,7 @@ import {
 } from './triggers/serialport';
 import { PROGRESS_BAR } from './utils/constants';
 import { Timeline } from './utils/types';
+import { changeProgressBar } from './utils/utils';
 
 /**
  * @function run
@@ -205,6 +206,7 @@ export async function run({
     max_load_time: 120000, // Allows program to load (arbitrary value currently)
     on_load() {
       addFullscreenButton();
+      addFontSizeMenu();
     },
   });
 
@@ -213,17 +215,64 @@ export async function run({
   }
 
   timeline.push(buildIntroduction());
-  timeline.push(buildPracticeTrials(jsPsych, state, device));
-  timeline.push(
-    buildCalibration(jsPsych, state, updateDataWithSettings, device),
-  );
-  timeline.push(
-    buildValidation(jsPsych, state, updateDataWithSettings, device),
-  );
-  timeline.push(buildTaskCore(jsPsych, state, updateDataWithSettings, device));
-  timeline.push(
-    buildFinalCalibration(jsPsych, state, updateDataWithSettings, device),
-  );
+  timeline.push({
+    timeline: [...buildPracticeTrials(jsPsych, state, device)],
+    on_timeline_finish() {
+      changeProgressBar(
+        PROGRESS_BAR.PROGRESS_BAR_CALIBRATION,
+        state.getProgressBarStatus('practice'),
+        jsPsych,
+      );
+    },
+  });
+  timeline.push({
+    timeline: [
+      ...buildCalibration(jsPsych, state, updateDataWithSettings, device),
+    ],
+    on_timeline_finish() {
+      changeProgressBar(
+        PROGRESS_BAR.PROGRESS_BAR_VALIDATION,
+        state.getProgressBarStatus('calibration'),
+        jsPsych,
+      );
+    },
+  });
+  timeline.push({
+    timeline: [
+      ...buildValidation(jsPsych, state, updateDataWithSettings, device),
+    ],
+    on_timeline_finish() {
+      changeProgressBar(
+        PROGRESS_BAR.PROGRESS_BAR_TRIAL_BLOCKS,
+        state.getProgressBarStatus('block', 0),
+        jsPsych,
+      );
+    },
+  });
+  timeline.push({
+    timeline: [
+      ...buildTaskCore(jsPsych, state, updateDataWithSettings, device),
+    ],
+    on_timeline_finish() {
+      changeProgressBar(
+        PROGRESS_BAR.PROGRESS_BAR_FINAL_CALIBRATION,
+        state.getProgressBarStatus('finalCal'),
+        jsPsych,
+      );
+    },
+  });
+  timeline.push({
+    timeline: [
+      ...buildFinalCalibration(jsPsych, state, updateDataWithSettings, device),
+    ],
+    on_timeline_finish() {
+      changeProgressBar(
+        PROGRESS_BAR.PROGRESS_BAR_FINAL_CALIBRATION,
+        1,
+        jsPsych,
+      );
+    },
+  });
 
   // User clicks continue to download experiment data locally
   timeline.push(finishExperiment(jsPsych, updateDataWithSettings));

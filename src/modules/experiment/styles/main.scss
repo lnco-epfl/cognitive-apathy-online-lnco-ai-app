@@ -5,7 +5,7 @@ body {
 
 @media (display-mode: fullscreen) {
   .player-view {
-    height: 100vh;
+    min-height: 100vh;
   }
 }
 
@@ -15,7 +15,7 @@ body {
 }
 
 [data-font-size='normal'] {
-  --font-scale: 0.8;
+  --font-scale: 1;
 }
 
 [data-font-size='large'] {
@@ -43,7 +43,6 @@ body {
   font-size: calc(var(--font-scale) * 0.9rem);
 }
 
-/* Add more element styles as needed */
 .jspsych-display-element {
   background-color: #fffefe;
   display: flex;
@@ -51,30 +50,30 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  min-height: inherit;
   margin: 0;
   padding: 0;
-  font-size: calc(var(--font-scale) * 1rem);
 }
 
 .jspsych-content-wrapper {
-  margin: calc(var(--font-scale) * 55px) 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   height: 100%;
+  margin-top: calc(var(--font-scale) * 50px);
 }
 
 .jspsych-content {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
+  font-size: calc(var(--font-scale) * 1rem);
   gap: 5px;
 }
 
@@ -174,14 +173,14 @@ body {
 
 .video-div {
   margin: 0 auto;
-  width: calc(var(--font-scale) * 60%);
+  width: calc(var(--font-scale) * 40%);
   max-width: 100%;
   background-color: #fff;
 }
 
 #clock {
   display: block; /* Ensure it is displayed as a block element */
-  font-size: calc(var(--font-scale) * 1rem);
+  width: calc(var(--font-scale) * 2em);
   margin-top: 10px; /* Add some space above the clock */
 }
 
@@ -196,6 +195,10 @@ body {
 }
 .hg-activeButton {
   background: #008000 !important;
+}
+
+#message-container {
+  margin: 0 auto;
 }
 
 ol {
@@ -214,12 +217,12 @@ ul.warning {
   list-style-position: inside;
   margin: 0 auto;
   padding: 0;
-  text-align: center;
+  text-align: left;
   display: inline-block;
 }
 
 ul.warning li {
-  text-align: center;
+  text-align: left;
   color: red;
   position: relative;
   padding-left: 1.5em; /* Add space for the emoji */
@@ -286,6 +289,30 @@ ul li {
     0px 2px 2px 0px rgba(0, 0, 0, 0.14),
     0px 1px 5px 0px rgba(0, 0, 0, 0.12);
   text-align: center;
+}
+
+#jspsych-survey-likert-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 90%;
+}
+
+#jspsych-survey-likert-form input {
+  width: fit-content;
+}
+
+.jspsych-survey-likert-statement {
+  font-size: calc(var(--font-scale) * 1rem) !important;
+}
+
+.jspsych-survey-likert-opts {
+  font-size: calc(var(--font-scale) * 1rem);
+}
+
+.jspsych-survey-likert-opt-label {
+  font-size: calc(var(--font-scale) * 1rem);
 }
 
 /** PhotoDiode class **/

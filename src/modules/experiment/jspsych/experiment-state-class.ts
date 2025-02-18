@@ -334,24 +334,26 @@ export class ExperimentState {
     state: 'practice' | 'calibration' | 'validation' | 'block' | 'finalCal',
     trialBlock?: number,
   ): number {
-    const totalSections =
-      4 +
-      this.settings.taskSettings.taskBlockRepetitions *
-        this.settings.taskSettings.taskBlocksIncluded.length;
     switch (state) {
       case 'practice':
-        return 0;
+        return 0.05;
       case 'calibration':
-        return 1 / totalSections;
+        return 0.1;
       case 'validation':
-        return 2 / totalSections;
+        return 0.15;
       case 'block':
         if (trialBlock) {
-          return (3 + trialBlock) / totalSections;
+          return (
+            0.15 +
+            (trialBlock /
+              (this.settings.taskSettings.taskBlockRepetitions *
+                this.settings.taskSettings.taskBlocksIncluded.length)) *
+              0.8
+          );
         }
-        return 3 / totalSections;
+        return 0.15;
       case 'finalCal':
-        return (totalSections - 1) / totalSections;
+        return 0.95;
       default:
         return 0;
     }

@@ -211,11 +211,7 @@ export const practiceLoop = (
     },
   ],
   on_timeline_start() {
-    changeProgressBar(
-      PROGRESS_BAR.PROGRESS_BAR_PRACTICE,
-      state.getProgressBarStatus('practice'),
-      jsPsych,
-    );
+    changeProgressBar(PROGRESS_BAR.PROGRESS_BAR_PRACTICE, 0, jsPsych);
   },
   on_timeline_finish() {
     state.incrementNumberPracticeLoopsCompleted();
