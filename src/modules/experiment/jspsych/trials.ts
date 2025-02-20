@@ -470,30 +470,41 @@ export const generateTaskTrialBlock = (
   index: number,
   updateData: (data: DataCollection) => void,
   device: DeviceType,
-): Timeline => [
-  {
-    timeline: createTaskBlockDemo(jsPsych, state, delay, updateData, device),
-    on_timeline_start() {
-      changeProgressBar(
-        `${PROGRESS_BAR.PROGRESS_BAR_TRIAL_BLOCKS} ${index + 1}`,
-        state.getProgressBarStatus('block', index),
-        jsPsych,
-      );
+): Trial => ({
+  timeline: [
+    {
+      timeline: createTaskBlockDemo(jsPsych, state, delay, updateData, device),
+      on_timeline_start() {
+        changeProgressBar(
+          `${PROGRESS_BAR.PROGRESS_BAR_TRIAL_BLOCKS} ${index + 1}`,
+          state.getProgressBarStatus('block', index),
+          jsPsych,
+        );
+      },
     },
+    {
+      timeline: createTaskBlockTrials(
+        jsPsych,
+        state,
+        delay,
+        updateData,
+        device,
+      ),
+    },
+    {
+      // Likert scale survey after block
+      timeline: [
+        likertIntro(),
+        ...likertQuestions2Randomized(jsPsych),
+        ...likertFinalQuestion(),
+      ],
+    },
+    createRewardDisplayTrial(jsPsych, state),
+  ],
+  on_timeline_finish() {
+    updateData(jsPsych.data.get());
   },
-  {
-    timeline: createTaskBlockTrials(jsPsych, state, delay, updateData, device),
-  },
-  {
-    // Likert scale survey after block
-    timeline: [
-      likertIntro(),
-      ...likertQuestions2Randomized(jsPsych),
-      ...likertFinalQuestion(),
-    ],
-  },
-  createRewardDisplayTrial(jsPsych, state),
-];
+});
 
 /**
  * @function generateTrialOrder

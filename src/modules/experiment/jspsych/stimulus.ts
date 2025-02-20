@@ -1,6 +1,8 @@
 import {
   ACCEPTANCE_TRIAL_MESSAGE,
   CLICK_BUTTON_TO_PROCEED_MESSAGE,
+  CONTINUE_MESSAGE_DIRECTION,
+  CONTINUE_MESSAGE_TITLE,
   FINAL_CALIBRATION_SECTION_DIRECTIONS_PART_1,
   FINAL_CALIBRATION_SECTION_DIRECTIONS_PART_2,
   GO_MESSAGE,
@@ -296,6 +298,18 @@ export const handTutorial = `
     <p style="color: #333; max-width: 80%; margin: 0 auto; line-height: 1.5;">
       ${CLICK_BUTTON_TO_PROCEED_MESSAGE}
     </p>
+</div>
+`;
+
+export const continueMessageDirectionContent = `
+<div style="text-align: center; margin: 0 10%;">
+  <h2>${CONTINUE_MESSAGE_TITLE}</h2>
+  <p>
+    ${CONTINUE_MESSAGE_DIRECTION}
+  </p>
+  <p style="color: #333; max-width: 80%; margin: 0 auto; line-height: 1.5;">
+    ${CLICK_BUTTON_TO_PROCEED_MESSAGE}
+  </p>
 </div>
 `;
 

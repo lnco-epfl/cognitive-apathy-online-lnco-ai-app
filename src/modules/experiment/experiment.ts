@@ -10,7 +10,10 @@ import { DataCollection, JsPsych, initJsPsych } from 'jspsych';
 
 import { ExperimentResult } from '../config/appResults';
 import { AllSettingsType } from '../context/SettingsContext';
-import { ExperimentState } from './jspsych/experiment-state-class';
+import {
+  ExperimentState,
+  MedianTapsType,
+} from './jspsych/experiment-state-class';
 import { finishExperiment } from './jspsych/finish';
 import './jspsych/i18n';
 import { buildCalibration, buildFinalCalibration } from './parts/calibration';
@@ -25,7 +28,7 @@ import {
   deviceConnectPages,
 } from './triggers/serialport';
 import { PROGRESS_BAR } from './utils/constants';
-import { Timeline } from './utils/types';
+import { DelayType, Timeline } from './utils/types';
 import { changeProgressBar } from './utils/utils';
 
 /**
@@ -39,7 +42,12 @@ export async function run({
   updateData,
 }: {
   assetPaths: { images: string[]; audio: string[]; video: string[] };
-  input: { settings: AllSettingsType; results: ExperimentResult };
+  input: {
+    settings: AllSettingsType;
+    results: ExperimentResult;
+    remainingTrialBlocks?: DelayType[];
+    medianTaps?: MedianTapsType;
+  };
   updateData: (data: DataCollection, settings: AllSettingsType) => void;
 }): Promise<JsPsych> {
   // To do: Initiate a state based on 'input' containing all settings
@@ -214,45 +222,71 @@ export async function run({
     timeline.push(deviceConnectPages(jsPsych, device, false));
   }
 
-  timeline.push(buildIntroduction());
-  timeline.push({
-    timeline: [...buildPracticeTrials(jsPsych, state, device)],
-    on_timeline_finish() {
-      changeProgressBar(
-        PROGRESS_BAR.PROGRESS_BAR_CALIBRATION,
-        state.getProgressBarStatus('practice'),
-        jsPsych,
-      );
-    },
-  });
+  if (input.medianTaps) {
+    state.setMedianTaps(input.medianTaps);
+  }
+
+  if (!input.remainingTrialBlocks) {
+    timeline.push(buildIntroduction());
+    timeline.push({
+      timeline: [...buildPracticeTrials(jsPsych, state, device)],
+      on_timeline_finish() {
+        changeProgressBar(
+          PROGRESS_BAR.PROGRESS_BAR_CALIBRATION,
+          state.getProgressBarStatus('practice'),
+          jsPsych,
+        );
+      },
+    });
+    timeline.push({
+      timeline: [
+        ...buildCalibration(jsPsych, state, updateDataWithSettings, device),
+      ],
+      on_timeline_finish() {
+        changeProgressBar(
+          PROGRESS_BAR.PROGRESS_BAR_VALIDATION,
+          state.getProgressBarStatus('calibration'),
+          jsPsych,
+        );
+      },
+    });
+    timeline.push({
+      timeline: [
+        ...buildValidation(jsPsych, state, updateDataWithSettings, device),
+      ],
+      on_timeline_finish() {
+        changeProgressBar(
+          PROGRESS_BAR.PROGRESS_BAR_TRIAL_BLOCKS,
+          state.getProgressBarStatus('block', 0),
+          jsPsych,
+        );
+      },
+    });
+  }
   timeline.push({
     timeline: [
-      ...buildCalibration(jsPsych, state, updateDataWithSettings, device),
-    ],
-    on_timeline_finish() {
-      changeProgressBar(
-        PROGRESS_BAR.PROGRESS_BAR_VALIDATION,
-        state.getProgressBarStatus('calibration'),
+      ...buildTaskCore(
         jsPsych,
-      );
-    },
-  });
-  timeline.push({
-    timeline: [
-      ...buildValidation(jsPsych, state, updateDataWithSettings, device),
+        state,
+        updateDataWithSettings,
+        device,
+        input.remainingTrialBlocks,
+      ),
     ],
-    on_timeline_finish() {
+    on_timeline_start() {
+      let trialBlockStart = 0;
+      if (input.remainingTrialBlocks) {
+        trialBlockStart =
+          input.settings.taskSettings.taskBlockRepetitions *
+            input.settings.taskSettings.taskBlocksIncluded.length -
+          input.remainingTrialBlocks.length;
+      }
       changeProgressBar(
         PROGRESS_BAR.PROGRESS_BAR_TRIAL_BLOCKS,
-        state.getProgressBarStatus('block', 0),
+        state.getProgressBarStatus('block', trialBlockStart),
         jsPsych,
       );
     },
-  });
-  timeline.push({
-    timeline: [
-      ...buildTaskCore(jsPsych, state, updateDataWithSettings, device),
-    ],
     on_timeline_finish() {
       changeProgressBar(
         PROGRESS_BAR.PROGRESS_BAR_FINAL_CALIBRATION,

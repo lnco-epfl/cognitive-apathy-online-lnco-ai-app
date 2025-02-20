@@ -304,6 +304,10 @@ export class ExperimentState {
     this.state.currentCalibrationStepSuccesses[calibrationPart] += 1;
   }
 
+  setMedianTaps(medianTaps: MedianTapsType): void {
+    this.state.medianTaps = medianTaps;
+  }
+
   updateCalibrationSuccesses(
     calibrationPart: CalibrationPartType,
     successes: number,

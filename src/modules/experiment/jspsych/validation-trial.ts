@@ -66,9 +66,14 @@ export const handleValidationFinish = (
   data: ValidationData,
   validationStep: ValidationPartType,
   state: ExperimentState,
+  jsPsych: JsPsych,
 ): void => {
   // Check if trial was unsuccessful, otherwise nothing needs to be done
-  if (!data.success) {
+  if (
+    !data.success &&
+    !checkFlag(validationStep, 'keyTappedEarlyFlag', jsPsych) &&
+    !checkFlag(validationStep, 'keysReleasedFlag', jsPsych)
+  ) {
     // Update number of failures for this validation step
     state.increaseValidationFailures(validationStep);
     // Calculate the number of failures allowed per validation step
@@ -185,7 +190,7 @@ export const createValidationTrial = (
                 );
                 // eslint-disable-next-line no-param-reassign
                 data.task = validationName;
-                handleValidationFinish(data, validationName, state);
+                handleValidationFinish(data, validationName, state, jsPsych);
                 updateData(jsPsych.data.get());
               },
             },
