@@ -36,10 +36,10 @@ import { ExperimentState } from './experiment-state-class';
 import { finishExperimentEarly } from './finish';
 
 const defaultValidationBounds = {
-  [ValidationPartType.ValidationEasy]: [30, 50],
-  [ValidationPartType.ValidationMedium]: [50, 70],
-  [ValidationPartType.ValidationHard]: [70, 90],
-  [ValidationPartType.ValidationExtra]: [70, 90],
+  [ValidationPartType.ValidationEasy]: [5, 23],
+  [ValidationPartType.ValidationMedium]: [41, 59],
+  [ValidationPartType.ValidationHard]: [77, 95],
+  [ValidationPartType.ValidationExtra]: [77, 95],
 };
 
 const validationBoundsType = {

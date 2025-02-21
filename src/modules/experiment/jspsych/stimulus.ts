@@ -112,7 +112,7 @@ export const acceptanceThermometer = (
       ></div>
     </div>
   </div>
-  <p style="text-align: center;">${REWARD_TRIAL_MESSAGE} ${reward.toFixed(0)} points</p>
+  <p style="text-align: center;">${REWARD_TRIAL_MESSAGE} ${reward.toFixed(2)} points</p>
   <p style="text-align: center;">${ACCEPTANCE_TRIAL_MESSAGE}</p>
 </div>
 `;

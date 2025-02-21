@@ -36,7 +36,6 @@ export const ExperimentLoader: FC = () => {
     let medianTaps = defaultMedianTaps;
     const lastObjectWithMedianTaps = trials
       .slice()
-      .reverse()
       .find((trial) => 'medianTaps' in trial);
 
     if (lastObjectWithMedianTaps) {

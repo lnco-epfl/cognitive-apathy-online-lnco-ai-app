@@ -257,19 +257,22 @@ export const createTaskBlockDemo = (
   delay: DelayType,
   updateData: (data: DataCollection) => void,
   device: DeviceType,
-): Timeline => [
-  {
-    type: htmlButtonResponse,
-    stimulus: () =>
-      `<p>${DEMO_TRIAL_MESSAGE(state.getTaskSettings().taskBoundsIncluded.length, getNumTrialsPerBlock(state))}</p>`,
-    choices: [CONTINUE_BUTTON_MESSAGE],
-    on_start() {
-      state.resetDemoTrialSuccesses(); // Reset demo successes before starting
+): Timeline => {
+  const demoTrialSet =
+    state.getTaskSettings().taskBoundsIncluded.length <= 3
+      ? state.getTaskSettings().taskBoundsIncluded
+      : [BoundsType.Easy, BoundsType.Medium, BoundsType.Hard];
+  return [
+    {
+      type: htmlButtonResponse,
+      stimulus: () =>
+        `<p>${DEMO_TRIAL_MESSAGE(state.getTaskSettings().taskBoundsIncluded.length, getNumTrialsPerBlock(state))}</p>`,
+      choices: [CONTINUE_BUTTON_MESSAGE],
+      on_start() {
+        state.resetDemoTrialSuccesses(); // Reset demo successes before starting
+      },
     },
-  },
-  ...state
-    .getTaskSettings()
-    .taskBoundsIncluded.map((taskBounds: BoundsType) => ({
+    ...demoTrialSet.map((taskBounds: BoundsType) => ({
       timeline: generateTaskTrial(
         jsPsych,
         state,
@@ -293,10 +296,11 @@ export const createTaskBlockDemo = (
         );
       },
     })),
-  // Likert scale survey after demo
-  likertIntroDemo(),
-  ...likertQuestions1(),
-];
+    // Likert scale survey after demo
+    likertIntroDemo(),
+    ...likertQuestions1(),
+  ];
+};
 
 /**
  * Create the core trials for a specific task block in the following way:
@@ -443,7 +447,7 @@ export const createRewardDisplayTrial = (
       (totalSuccessfulReward / totalPoints) *
       totalMoney
     ).toFixed(2);
-    return `<p>${REWARD_TOTAL_MESSAGE(totalSuccessfulReward.toFixed(0), currentRewardMoney, 'USD')}</p>`;
+    return `<p>${REWARD_TOTAL_MESSAGE(totalSuccessfulReward.toFixed(2), currentRewardMoney, 'USD')}</p>`;
   },
   data: {
     task: 'display_reward',
