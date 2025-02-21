@@ -2,11 +2,17 @@ import { JsPsych } from 'jspsych';
 import { mean } from 'lodash';
 
 import { type ExperimentState } from '../jspsych/experiment-state-class';
-import { BOUNDS_DEFINITIONS, REWARD_DEFINITIONS } from './constants';
+import {
+  BOUNDS_DEFINITIONS,
+  DEFAULT_BOUNDS_VARIATION,
+  DEFAULT_REWARD_YITTER,
+  REWARD_DEFINITIONS,
+} from './constants';
 import {
   BoundsType,
   CalibrationPartType,
   OtherTaskStagesType,
+  RewardType,
   TaskStagesType,
 } from './types';
 
@@ -206,7 +212,7 @@ export function calculateTotalPoints(state: ExperimentState): number {
   const averageReward = mean(
     state
       .getTaskSettings()
-      .taskRewardsIncluded.map((reward) => mean(REWARD_DEFINITIONS[reward])),
+      .taskRewardsIncluded.map((reward) => REWARD_DEFINITIONS[reward]),
   );
   return totalTrial * averageReward;
 }
@@ -281,12 +287,25 @@ export function saveDataToLocalStorage(jsPsych: JsPsych): void {
  * @param bounds Boundstype for which the variation is generated
  * @returns the actual bounds for a trial
  */
+export const getRewardYitter = (
+  reward: RewardType,
+  jitterAmount: number = DEFAULT_REWARD_YITTER,
+): number => {
+  const jitter = Math.random() * (2 * jitterAmount) - jitterAmount;
+  return REWARD_DEFINITIONS[reward] + jitter;
+};
+
+/**
+ * Generate the actual bounds for a trial, which can have a 10% variation compared to the standard defined bounds
+ * @param bounds Boundstype for which the variation is generated
+ * @returns the actual bounds for a trial
+ */
 export const getBoundsVariation = (bounds: BoundsType): [number, number] => {
   const standardBounds = BOUNDS_DEFINITIONS[bounds];
   const difBounds = standardBounds[1] - standardBounds[0];
   const center = (standardBounds[0] + standardBounds[1]) / 2;
-  const min = center - difBounds / 2 - (center - difBounds / 2) * 0.1;
-  const max = center + difBounds / 2 + (center + difBounds / 2) * 0.1;
+  const min = center - DEFAULT_BOUNDS_VARIATION;
+  const max = center + DEFAULT_BOUNDS_VARIATION;
   const newCenter = randomNumberBm(min, max);
   return [newCenter - difBounds / 2, newCenter + difBounds / 2];
 };

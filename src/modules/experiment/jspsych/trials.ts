@@ -27,8 +27,8 @@ import {
   FAILED_MINIMUM_DEMO_TAPS_MESSAGE,
   MINIMUM_DEMO_TAPS,
   PROGRESS_BAR,
-  REWARD_DEFINITIONS,
   REWARD_TOTAL_MESSAGE,
+  TOTAL_REWARD_MONEY,
   TRIAL_DURATION,
 } from '../utils/constants';
 import {
@@ -49,7 +49,7 @@ import {
   checkFlag,
   checkKeys,
   getBoundsVariation,
-  /* randomAcceptance */
+  getRewardYitter,
   saveDataToLocalStorage,
   shuffle,
 } from '../utils/utils';
@@ -331,10 +331,7 @@ export const createTaskBlockTrials = (
   )
     .flat()
     .map(({ bounds, reward }) => {
-      const actualReward =
-        REWARD_DEFINITIONS[reward][
-          Math.floor(Math.random() * REWARD_DEFINITIONS[reward].length)
-        ];
+      const actualReward = getRewardYitter(reward);
       const actualBounds = getBoundsVariation(bounds);
       const actualDelay = DELAY_DEFINITIONS[delay];
       const randomSkip =
@@ -441,8 +438,12 @@ export const createRewardDisplayTrial = (
     // TODO: Add Currency and Total Reward as configuration
     const totalSuccessfulReward = calculateTotalReward(jsPsych);
     const totalPoints = calculateTotalPoints(state);
-    const totalMoney = 8; // connection to state
-    return `<p>${REWARD_TOTAL_MESSAGE(totalSuccessfulReward.toFixed(0), ((totalSuccessfulReward / totalPoints) * totalMoney).toFixed(2), 'USD')}</p>`;
+    const totalMoney = TOTAL_REWARD_MONEY; // connection to state
+    const currentRewardMoney = (
+      (totalSuccessfulReward / totalPoints) *
+      totalMoney
+    ).toFixed(2);
+    return `<p>${REWARD_TOTAL_MESSAGE(totalSuccessfulReward.toFixed(0), currentRewardMoney, 'USD')}</p>`;
   },
   data: {
     task: 'display_reward',

@@ -1,11 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import i18n from '../jspsych/i18n';
-import {
-  BoundsType,
-  CalibrationPartType,
-  DelayType,
-  RewardType,
-} from './types';
+import { BoundsType, DelayType, RewardType } from './types';
 
 export const LOADING_BAR_SPEED_NO = 50;
 export const LOADING_BAR_SPEED_YES = 5;
@@ -26,18 +21,26 @@ export const DELAY_DEFINITIONS: { [key in DelayType]: [number, number] } = {
 };
 
 export const BOUNDS_DEFINITIONS: { [key in BoundsType]: [number, number] } = {
-  [BoundsType.Easy]: [20, 40],
-  [BoundsType.Medium]: [45, 65],
-  [BoundsType.Hard]: [70, 90],
+  [BoundsType.Easy]: [5, 23],
+  [BoundsType.EasyMedium]: [23, 41],
+  [BoundsType.Medium]: [41, 59],
+  [BoundsType.MediumHard]: [59, 77],
+  [BoundsType.Hard]: [77, 95],
 };
 
 export const REWARD_DEFINITIONS: {
-  [key in RewardType]: [number, number, number];
+  [key in RewardType]: number;
 } = {
-  [RewardType.Low]: [1, 2, 3],
-  [RewardType.Middle]: [9, 10, 11],
-  [RewardType.High]: [24, 25, 26],
+  [RewardType.Low]: 1,
+  [RewardType.LowMiddle]: 5,
+  [RewardType.Middle]: 10,
+  [RewardType.MiddleHigh]: 20,
+  [RewardType.High]: 40,
 };
+
+export const DEFAULT_REWARD_YITTER = 0.5;
+export const DEFAULT_BOUNDS_VARIATION = 3;
+export const TOTAL_REWARD_MONEY = 8;
 
 export const NUM_CALIBRATION_WITHOUT_FEEDBACK_TRIALS = 4; // 4 default
 export const NUM_CALIBRATION_WITH_FEEDBACK_TRIALS = 3; // 3 default
@@ -50,13 +53,6 @@ export const NUM_FINAL_CALIBRATION_TRIALS_PART_2 = 3; // 3 default
 
 export const MINIMUM_CALIBRATION_MEDIAN = 10;
 export const EXPECTED_MAXIMUM_PERCENTAGE_FOR_CALIBRATION = 50;
-
-export const CALIBRATION_PROGRESS_BAR = {
-  [CalibrationPartType.CalibrationPart1]: 0.2,
-  [CalibrationPartType.CalibrationPart2]: 0.35,
-  [CalibrationPartType.FinalCalibrationPart1]: 0.8,
-  [CalibrationPartType.FinalCalibrationPart2]: 0.99,
-};
 
 export const PERCENTAGE_VALIDATION_TRIALS_SUCCESSFUL = 0.75;
 export const NUM_VALIDATION_TRIALS = 4; // 4 default
