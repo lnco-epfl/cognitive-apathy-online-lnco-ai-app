@@ -338,3 +338,13 @@ export const randomAcceptance = (): boolean => {
   }
   return false;
 };
+
+// Get keys to hold down from state
+export const getHoldKeys = (state: ExperimentState): string[] =>
+  Object.entries(state.getKeySettings())
+    .filter(([index, key]) => index !== 'leftIndex' && key)
+    .map(([_, value]) => value.toLowerCase());
+
+// Get Tapping Key
+export const getTapKey = (state: ExperimentState): string =>
+  state.getKeySettings().leftIndex.toLowerCase();

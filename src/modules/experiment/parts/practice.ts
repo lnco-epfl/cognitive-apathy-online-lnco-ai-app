@@ -24,6 +24,8 @@ import {
   checkFlag,
   checkKeys,
   checkTaps,
+  getHoldKeys,
+  getTapKey,
 } from '../utils/utils';
 
 /**
@@ -42,9 +44,12 @@ export const handTutorialTrial = (): Trial => ({
  * @param jsPsych current experiment
  * @returns returns a video trail showcasing the pressing of the keyboard required for the task
  */
-export const noStimuliVideoTutorialTrial = (jsPsych: JsPsych): Trial => ({
+export const noStimuliVideoTutorialTrial = (
+  jsPsych: JsPsych,
+  state: ExperimentState,
+): Trial => ({
   type: HtmlButtonResponsePlugin,
-  stimulus: [noStimuliVideo],
+  stimulus: [noStimuliVideo(state.getKeySettings())],
   enable_button_after: ENABLE_BUTTON_AFTER_TIME,
   choices: [CONTINUE_BUTTON_MESSAGE],
   on_finish() {
@@ -60,7 +65,9 @@ export const noStimuliVideoTutorialTrial = (jsPsych: JsPsych): Trial => ({
  */
 export const interactiveCountdown = (state: ExperimentState): Trial => ({
   type: CountdownTrialPlugin,
-  message: INTERACTIVE_KEYBOARD_TUTORIAL_MESSAGE,
+  message: INTERACTIVE_KEYBOARD_TUTORIAL_MESSAGE(state.getKeySettings()),
+  keysToHold: getHoldKeys(state),
+  keyToPress: getTapKey(state),
   showKeyboard: true,
   usePhotoDiode: state.getPhotoDiodeSettings().usePhotoDiode,
   data: {
@@ -88,6 +95,8 @@ export const practiceTrial = (
   timeline: [
     {
       type: TappingTask,
+      keysToHold: getHoldKeys(state),
+      keyToPress: getTapKey(state),
       showThermometer: false,
       task: 'practice',
       usePhotoDiode: state.getPhotoDiodeSettings().usePhotoDiode,
@@ -127,7 +136,7 @@ export const practiceTrial = (
       },
     },
     {
-      timeline: [releaseKeysStep()],
+      timeline: [releaseKeysStep(state)],
       conditional_function() {
         return checkKeys(OtherTaskStagesType.Practice, jsPsych);
       },
@@ -231,7 +240,7 @@ export const buildPracticeTrials = (
 ): Timeline => {
   const practiceTimeline: Timeline = [];
 
-  practiceTimeline.push(noStimuliVideoTutorialTrial(jsPsych));
+  practiceTimeline.push(noStimuliVideoTutorialTrial(jsPsych, state));
   practiceTimeline.push(handTutorialTrial());
   for (
     let i = 0;

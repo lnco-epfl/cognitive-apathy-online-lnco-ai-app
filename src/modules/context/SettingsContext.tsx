@@ -49,6 +49,18 @@ export type PhotoDiodeSettings = {
   testPhotoDiode?: boolean;
 };
 
+export type KeySettings = {
+  leftMiddle: string;
+  leftIndex: string;
+} & OptionalKeys;
+
+export type OptionalKeys = {
+  leftPink?: string;
+  leftRing?: string;
+  leftThumb?: string;
+  rightIndex?: string;
+};
+
 // mapping between Setting names and their data type
 export type AllSettingsType = {
   generalSettings: GeneralSettingsType;
@@ -57,7 +69,9 @@ export type AllSettingsType = {
   validationSettings: ValidationSettingsType;
   taskSettings: TaskSettingsType;
   photoDiodeSettings: PhotoDiodeSettings;
+  keySettings: KeySettings;
 };
+
 // default values for the data property of settings by name
 const defaultSettingsValues: AllSettingsType = {
   generalSettings: {
@@ -92,6 +106,10 @@ const defaultSettingsValues: AllSettingsType = {
   photoDiodeSettings: {
     usePhotoDiode: 'off',
   },
+  keySettings: {
+    leftIndex: 'f',
+    leftMiddle: 'e',
+  },
 };
 
 // list of the settings names
@@ -102,6 +120,7 @@ const ALL_SETTING_NAMES = [
   'validationSettings',
   'taskSettings',
   'photoDiodeSettings',
+  'keySettings',
 ] as const;
 
 // automatically generated types

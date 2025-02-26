@@ -51,7 +51,7 @@ const calibrationVideo = (
   state: ExperimentState,
 ): Trial => ({
   type: HtmlButtonResponsePlugin,
-  stimulus: [calibrationStimuliObject[calibrationPart]],
+  stimulus: [calibrationStimuliObject(state)[calibrationPart]],
   choices: [CONTINUE_BUTTON_MESSAGE],
   enable_button_after: ENABLE_BUTTON_AFTER_TIME,
   on_start() {
@@ -82,7 +82,9 @@ export const buildCalibration = (
   calibrationTimeline.push(calibrationSectionDirectionTrial());
 
   // User is displayed instructions on how the calibration part 1 trials will proceed
-  calibrationTimeline.push(instructionalTrial(CALIBRATION_PART_1_DIRECTIONS));
+  calibrationTimeline.push(
+    instructionalTrial(CALIBRATION_PART_1_DIRECTIONS(state.getKeySettings())),
+  );
 
   // Calibration part 1 proceeds (4 trials, user taps as fast as possible, no visual feedback)
   calibrationTimeline.push(

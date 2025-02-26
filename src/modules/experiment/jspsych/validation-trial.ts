@@ -31,6 +31,8 @@ import {
   changeProgressBar,
   checkFlag,
   checkKeys,
+  getHoldKeys,
+  getTapKey,
 } from '../utils/utils';
 import { ExperimentState } from './experiment-state-class';
 import { finishExperimentEarly } from './finish';
@@ -132,9 +134,11 @@ export const createValidationTrial = (
       timeline: [
         {
           timeline: [
-            countdownStep(),
+            countdownStep(state),
             {
               type: TaskPlugin,
+              keysToHold: getHoldKeys(state),
+              keyToPress: getTapKey(state),
               task: validationName,
               duration: TRIAL_DURATION,
               showThermometer: true,
@@ -195,7 +199,7 @@ export const createValidationTrial = (
               },
             },
             {
-              timeline: [releaseKeysStep()],
+              timeline: [releaseKeysStep(state)],
               conditional_function() {
                 return checkKeys(validationName, jsPsych);
               },

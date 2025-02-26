@@ -8,6 +8,7 @@ import { isEqual } from 'lodash';
 import {
   CalibrationSettingsType,
   GeneralSettingsType,
+  KeySettings,
   PhotoDiodeSettings,
   PracticeSettingsType,
   TaskSettingsType,
@@ -16,6 +17,7 @@ import {
 } from '../context/SettingsContext';
 import CalibrationSettingsView from './CalibrationSettingsView';
 import GeneralSettingsView from './GeneralSettingsView';
+import KeySettingsView from './KeySettingsView';
 import PhotoDiodeSettingsView from './PhotoDiodeSettingsView';
 import PracticeSettingsView from './PracticeSettingsView';
 import TaskSettingsView from './TaskSettingsView';
@@ -29,6 +31,7 @@ const SettingsView: FC = () => {
     validationSettings: validationSettingsSaved,
     taskSettings: taskSettingsSaved,
     photoDiodeSettings: photoDiodeSettingsSaved,
+    keySettings: keySettingsSaved,
     saveSettings,
   } = useSettings();
 
@@ -44,6 +47,8 @@ const SettingsView: FC = () => {
     useState<TaskSettingsType>(taskSettingsSaved);
   const [photoDiodeSettings, updatePhotoDiodeSettings] =
     useState<PhotoDiodeSettings>(photoDiodeSettingsSaved);
+  const [keySettings, updateKeySettings] =
+    useState<KeySettings>(keySettingsSaved);
 
   const saveAllSettings = (): void => {
     saveSettings('generalSettings', generalSettings);
@@ -52,6 +57,7 @@ const SettingsView: FC = () => {
     saveSettings('validationSettings', validationSettings);
     saveSettings('taskSettings', taskSettings);
     saveSettings('photoDiodeSettings', photoDiodeSettings);
+    saveSettings('keySettings', keySettings);
   };
 
   const disableSave = useMemo(() => {
@@ -61,7 +67,8 @@ const SettingsView: FC = () => {
       isEqual(calibrationSettingsSaved, calibrationSettings) &&
       isEqual(validationSettingsSaved, validationSettings) &&
       isEqual(taskSettingsSaved, taskSettings) &&
-      isEqual(photoDiodeSettingsSaved, photoDiodeSettings)
+      isEqual(photoDiodeSettingsSaved, photoDiodeSettings) &&
+      isEqual(keySettingsSaved, keySettings)
     ) {
       return true;
     }
@@ -79,6 +86,8 @@ const SettingsView: FC = () => {
     taskSettings,
     photoDiodeSettingsSaved,
     photoDiodeSettings,
+    keySettingsSaved,
+    keySettings,
   ]);
 
   return (
@@ -108,6 +117,7 @@ const SettingsView: FC = () => {
         photoDiodeSettings={photoDiodeSettings}
         onChange={updatePhotoDiodeSettings}
       />
+      <KeySettingsView keySettings={keySettings} onChange={updateKeySettings} />
       <Box>
         <Button
           variant="contained"

@@ -18,9 +18,12 @@ import { Timeline, Trial, ValidationPartType } from '../utils/types';
 
 // Creates a tutorial trial that will be used to display the video tutorial for the validations trials with stimulus and changes the progress bar afterwards
 // Should be merged with trial above
-export const validationVideoTutorialTrial = (jsPsych: JsPsych): Trial => ({
+export const validationVideoTutorialTrial = (
+  jsPsych: JsPsych,
+  state: ExperimentState,
+): Trial => ({
   type: HtmlButtonResponsePlugin,
-  stimulus: [validationVideo],
+  stimulus: [validationVideo(state.getKeySettings())],
   choices: [CONTINUE_BUTTON_MESSAGE],
   enable_button_after: ENABLE_BUTTON_AFTER_TIME,
   on_finish() {
@@ -38,7 +41,7 @@ export const buildValidation = (
 ): Timeline => {
   const validationTimeline: Timeline = [];
   // User is displayed instructions and visual demonstration on how the validations trials will proceed
-  validationTimeline.push(validationVideoTutorialTrial(jsPsych));
+  validationTimeline.push(validationVideoTutorialTrial(jsPsych, state));
   // Easy validation trials are pushed (4 trials, user must end with top of red bar in target area, bounds are [30,50])
   validationTimeline.push(
     createValidationTrial(

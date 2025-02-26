@@ -27,6 +27,8 @@ import {
   calculateMedianTapCount,
   checkFlag,
   checkKeys,
+  getHoldKeys,
+  getTapKey,
 } from '../utils/utils';
 import { ExperimentState } from './experiment-state-class';
 import { finishExperimentEarlyTrial } from './finish';
@@ -93,6 +95,8 @@ const calibrationTrialBody = ({
   device,
 }: CalibrationTrialParams): Trial => ({
   type: TappingTask,
+  keysToHold: getHoldKeys(state),
+  keyToPress: getTapKey(state),
   task: calibrationPart,
   trial_duration: TRIAL_DURATION,
   showThermometer,
@@ -197,7 +201,7 @@ export const createCalibrationTrial = ({
 }: CalibrationTrialParams): Trial => ({
   timeline: [
     // Start with the countdown step
-    countdownStep(),
+    countdownStep(state),
     // Then add the main tapping test step
     calibrationTrialBody({
       showThermometer,
@@ -209,7 +213,7 @@ export const createCalibrationTrial = ({
     }),
     // Add the Release Keys message trial at the end of the task
     {
-      timeline: [releaseKeysStep()],
+      timeline: [releaseKeysStep(state)],
       conditional_function() {
         return checkKeys(calibrationPart, jsPsych);
       },
@@ -257,7 +261,7 @@ export const createConditionalCalibrationTrial = (
       stimulus() {
         // Reset success counters for the calibration trials completed after minimum taps not reached
         state.updateCalibrationSuccesses(calibrationPart, 0);
-        return `<p>${ADDITIONAL_CALIBRATION_PART_1_DIRECTIONS}</p>`;
+        return `<p>${ADDITIONAL_CALIBRATION_PART_1_DIRECTIONS(state.getKeySettings())}</p>`;
       },
     },
     createCalibrationTrial({

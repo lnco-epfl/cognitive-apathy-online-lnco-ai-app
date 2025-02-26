@@ -49,7 +49,9 @@ import {
   checkFlag,
   checkKeys,
   getBoundsVariation,
+  getHoldKeys,
   getRewardYitter,
+  getTapKey,
   saveDataToLocalStorage,
   shuffle,
 } from '../utils/utils';
@@ -104,9 +106,11 @@ const generateTaskTrial = (
   bounds: BoundsType,
   reward?: RewardType,
 ): Timeline => [
-  ...(!randomSkip ? [countdownStep()] : []),
+  ...(!randomSkip ? [countdownStep(state)] : []),
   {
     type: TappingTask,
+    keysToHold: getHoldKeys(state),
+    keyToPress: getTapKey(state),
     task: demo ? OtherTaskStagesType.Demo : OtherTaskStagesType.Block,
     duration: TRIAL_DURATION,
     showThermometer: true,
@@ -194,7 +198,7 @@ const generateTaskTrial = (
     },
   },
   {
-    timeline: [releaseKeysStep()],
+    timeline: [releaseKeysStep(state)],
     conditional_function() {
       return (
         checkKeys(
@@ -266,7 +270,7 @@ export const createTaskBlockDemo = (
     {
       type: htmlButtonResponse,
       stimulus: () =>
-        `<p>${DEMO_TRIAL_MESSAGE(state.getTaskSettings().taskBoundsIncluded.length, getNumTrialsPerBlock(state))}</p>`,
+        `<p>${DEMO_TRIAL_MESSAGE(state.getTaskSettings().taskBoundsIncluded.length, getNumTrialsPerBlock(state), state.getKeySettings())}</p>`,
       choices: [CONTINUE_BUTTON_MESSAGE],
       on_start() {
         state.resetDemoTrialSuccesses(); // Reset demo successes before starting

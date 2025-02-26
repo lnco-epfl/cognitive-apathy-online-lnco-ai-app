@@ -1,3 +1,5 @@
+import { KeySettings } from '@/modules/context/SettingsContext';
+
 import {
   ACCEPTANCE_TRIAL_MESSAGE,
   CLICK_BUTTON_TO_PROCEED_MESSAGE,
@@ -21,6 +23,7 @@ import {
   VALIDATION_VIDEO_TUTORIAL_MESSAGE,
 } from '../utils/constants';
 import { CalibrationPartType } from '../utils/types';
+import { ExperimentState } from './experiment-state-class';
 
 export function stimulus(
   showThermometer: boolean,
@@ -139,11 +142,11 @@ export const loadingBar = (): string => `
   </div>
 `;
 
-export const noStimuliVideo = `
+export const noStimuliVideo = (keySettings: KeySettings): string => `
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 0;">
   <div style="text-align: center; margin-bottom: 2%;">
     <p style="font-size: 1.5vw; color: #333; max-width: 80%; margin: 0 auto; line-height: 1.5;">
-      ${NO_STIMULI_VIDEO_TUTORIAL_MESSAGE}
+      ${NO_STIMULI_VIDEO_TUTORIAL_MESSAGE(keySettings)}
     </p>
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
@@ -164,11 +167,11 @@ export const noStimuliVideo = `
     </p>
 </div>`;
 
-export const stimuliVideo = `
+export const stimuliVideo = (keySettings: KeySettings): string => `
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 0;">
   <div style="text-align: center; margin-bottom: 0%;">
     <p>
-      ${STIMULI_VIDEO_TUTORIAL_MESSAGE}
+      ${STIMULI_VIDEO_TUTORIAL_MESSAGE(keySettings)}
     </p>
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
@@ -191,11 +194,11 @@ export const stimuliVideo = `
   </div>
 </div>`;
 
-export const validationVideo = `
+export const validationVideo = (keySettings: KeySettings): string => `
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 0;">
   <div style="text-align: center; margin-bottom: 0%;">
     <p>
-      ${VALIDATION_VIDEO_TUTORIAL_MESSAGE}
+      ${VALIDATION_VIDEO_TUTORIAL_MESSAGE(keySettings)}
     </p>
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
@@ -218,11 +221,11 @@ export const validationVideo = `
   </div>
 </div>`;
 
-export const finalNoStimuliVideo = `
+export const finalNoStimuliVideo = (keySettings: KeySettings): string => `
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 0;">
   <div style="text-align: center; margin-bottom: 0%;">
     <p">
-      ${FINAL_CALIBRATION_SECTION_DIRECTIONS_PART_1}
+      ${FINAL_CALIBRATION_SECTION_DIRECTIONS_PART_1(keySettings)}
     </p>
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
@@ -272,12 +275,20 @@ export const finalStimuliVideo = `
   </div>
 </div>`;
 
-export const calibrationStimuliObject = {
-  [CalibrationPartType.CalibrationPart1]: noStimuliVideo,
-  [CalibrationPartType.CalibrationPart2]: stimuliVideo,
-  [CalibrationPartType.FinalCalibrationPart1]: finalNoStimuliVideo,
-  [CalibrationPartType.FinalCalibrationPart2]: finalNoStimuliVideo,
-};
+export const calibrationStimuliObject = (
+  state: ExperimentState,
+): Record<CalibrationPartType, string> => ({
+  [CalibrationPartType.CalibrationPart1]: noStimuliVideo(
+    state.getKeySettings(),
+  ),
+  [CalibrationPartType.CalibrationPart2]: stimuliVideo(state.getKeySettings()),
+  [CalibrationPartType.FinalCalibrationPart1]: finalNoStimuliVideo(
+    state.getKeySettings(),
+  ),
+  [CalibrationPartType.FinalCalibrationPart2]: finalNoStimuliVideo(
+    state.getKeySettings(),
+  ),
+});
 
 export const sitComfortablyStimuli = `
 <h2>${INTRODUCTION_HEADER}</h2>

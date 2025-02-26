@@ -7,6 +7,7 @@ import {
   AllSettingsType,
   CalibrationSettingsType,
   GeneralSettingsType,
+  KeySettings,
   PhotoDiodeSettings,
   PracticeSettingsType,
   TaskSettingsType,
@@ -189,6 +190,10 @@ export class ExperimentState {
         testPhotoDiode:
           settingsVariables.photoDiodeSettings.testPhotoDiode || undefined,
       },
+      keySettings: settingsVariables.keySettings || {
+        leftIndex: 'f',
+        leftMiddle: 'e',
+      },
     };
   }
 
@@ -236,6 +241,10 @@ export class ExperimentState {
 
   getPhotoDiodeSettings(): PhotoDiodeSettings {
     return this.settings.photoDiodeSettings;
+  }
+
+  getKeySettings(): KeySettings {
+    return this.settings.keySettings;
   }
 
   getCurrentSuccesses = (calibrationPart: CalibrationPartType): number =>
