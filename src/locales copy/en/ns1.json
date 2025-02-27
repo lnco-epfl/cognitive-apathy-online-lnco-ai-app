@@ -44,6 +44,7 @@
   "DEMO_TRIAL_MESSAGE": "<p><br>The next <b>{{NUM_DEMO_TRIALS}}</b> trials you will complete are <b>practice</b> trials.<br>The feedback you receive on the display when the <b>{{KEY_TO_PRESS}}</b> key is tapped will be the same as in the next block of trials that you will complete. <br><br> Attempt to finish the trial with the top of the red bar within the target area. <br>{{WARNING_MESSAGES_INSTRUCTION}}",
   "ACCEPTANCE_TRIAL_MESSAGE": "<br>Press the <b>Right Arrow</b> on your keyboard to accept the trial <svg class='right-arrow' style='width: 48px; height: 48px;'xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M10.146 4.646a.5.5 0 0 1 .708 0l2.646 2.647-2.646 2.646a.5.5 0 0 1-.708-.707L11.293 8H2a.5.5 0 0 1 0-1h9.293L10.146 5.354a.5.5 0 0 1 0-.708z'/></svg><br>or<br><svg class='left-arrow' style='width: 48px; height: 48px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M5.854 4.646a.5.5 0 0 0-.708 0L2.5 7.293l2.646 2.647a.5.5 0 0 0 .708-.707L4.707 8H14a.5.5 0 0 0 0-1H4.707l1.147-1.146a.5.5 0 0 0 0-.708z'/></svg>Press the <b>Left Arrow</b> on your keyboard to skip the trial",
   "DOMINANT_HAND_MESSAGE": "Select your dominant hand.",
+  "PRACTICE_MESSAGE": "<b>Tap {{KEY_REPLACE}}</b> as fast as you can, while <b>holding down the other keys</b>",
   "TRIAL_FAILED": "Trial Failed",
   "TRIAL_SUCCEEDED": "Trial Succeeded",
   "GO_MESSAGE": "GO!",

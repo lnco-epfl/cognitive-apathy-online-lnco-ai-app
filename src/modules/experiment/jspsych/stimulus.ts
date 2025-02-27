@@ -12,6 +12,7 @@ import {
   INTRODUCTION_HEADER,
   LOADING_BAR_MESSAGE,
   NO_STIMULI_VIDEO_TUTORIAL_MESSAGE,
+  PRACTICE_MESSAGE,
   REWARD_PAGE_DIRECTIONS,
   REWARD_PAGE_TITLE,
   REWARD_TRIAL_MESSAGE,
@@ -28,9 +29,11 @@ import { ExperimentState } from './experiment-state-class';
 export function stimulus(
   showThermometer: boolean,
   mercuryHeight: number,
+  showPracticeText: boolean,
   lowerBound: number,
   upperBound: number,
   targetArea: boolean,
+  keyToTap: string,
 ): string {
   const bounds = `
   <div
@@ -55,6 +58,13 @@ export function stimulus(
   </div>`
     : ``;
 
+  const practiceText = showPracticeText
+    ? `
+    <div id="status" style="margin-top: 50px; position:absolute; top:20%;">
+      <div id="start-message" style="color: black;">${PRACTICE_MESSAGE(keyToTap)}</div>
+    </div>`
+    : ``;
+
   const thermometer = showThermometer
     ? `<div
       id="thermometer-container"
@@ -77,6 +87,7 @@ export function stimulus(
   return `
       <div id="go-message" style="position: absolute; top:8%; font-size: 140px; color: green; visibility: hidden; transform: translateX(-50%); left: 50%; white-space: nowrap;">${GO_MESSAGE}</div>
       <div id="task-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 60px 200px;">
+        ${practiceText}
         <div style="display: flex; align-items: center; position: relative;">
           ${targetAreaText}
           ${thermometer}

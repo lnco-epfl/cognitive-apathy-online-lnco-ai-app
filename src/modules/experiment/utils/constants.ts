@@ -265,6 +265,8 @@ export const HOLD_KEYS_MESSAGE = (keySettings: KeySettings): string => {
   });
 };
 export const KEY_TAPPED_EARLY_MESSAGE = i18n.t('KEY_TAPPED_EARLY_MESSAGE');
+export const PRACTICE_MESSAGE = (keyToTap: string): string =>
+  i18n.t('PRACTICE_MESSAGE', { KEY_REPLACE: toName(keyToTap) });
 export const RELEASE_KEYS_MESSAGE = i18n.t('RELEASE_KEYS_MESSAGE');
 export const REWARD_TOTAL_MESSAGE = (
   totalSuccessfulReward: string,

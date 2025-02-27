@@ -420,9 +420,11 @@ class TappingTask {
       display_element.innerHTML = stimulus(
         trial.showThermometer,
         this.mercuryHeight,
+        trial.task === 'practice',
         trial.bounds[0],
         trial.bounds[1],
         trial.targetArea,
+        trial.keyToPress,
       );
 
       updateUI();
@@ -433,9 +435,11 @@ class TappingTask {
     display_element.innerHTML = stimulus(
       trial.showThermometer,
       this.mercuryHeight,
+      trial.task === 'practice',
       trial.bounds[0],
       trial.bounds[1],
       trial.targetArea,
+      trial.keyToPress,
     );
 
     if (trial.showKeyboard) {
