@@ -178,6 +178,10 @@ body {
   background-color: #fff;
 }
 
+.video-div h4 {
+  text-align: center;
+}
+
 #clock {
   display: block; /* Ensure it is displayed as a block element */
   width: calc(var(--font-scale) * 2em);

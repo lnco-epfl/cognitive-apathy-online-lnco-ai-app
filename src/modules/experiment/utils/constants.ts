@@ -95,7 +95,7 @@ export const customKeyOrder = [
   'leftRing',
   'leftMiddle',
   'leftThumb',
-  'rightThumb',
+  'rightIndex',
 ];
 
 export const PASSED_VALIDATION_MESSAGE = i18n.t('PASSED_VALIDATION_MESSAGE');

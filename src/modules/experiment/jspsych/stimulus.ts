@@ -160,8 +160,9 @@ export const noStimuliVideo = (keySettings: KeySettings): string => `
       ${NO_STIMULI_VIDEO_TUTORIAL_MESSAGE(keySettings)}
     </p>
   </div>
-  <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
+  <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; margin: 0 auto; flex-direction: column;">
     <div class="video-div">
+      <h4>Demonstration Video</h4>
       <video
         id="videoTutorial"
         title="Tutorial Video"
