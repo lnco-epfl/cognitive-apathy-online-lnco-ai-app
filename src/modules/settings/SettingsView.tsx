@@ -9,6 +9,7 @@ import {
   CalibrationSettingsType,
   GeneralSettingsType,
   KeySettings,
+  NextStepSettings,
   PhotoDiodeSettings,
   PracticeSettingsType,
   TaskSettingsType,
@@ -18,6 +19,7 @@ import {
 import CalibrationSettingsView from './CalibrationSettingsView';
 import GeneralSettingsView from './GeneralSettingsView';
 import KeySettingsView from './KeySettingsView';
+import NextStepSettingsView from './NextStepSettings';
 import PhotoDiodeSettingsView from './PhotoDiodeSettingsView';
 import PracticeSettingsView from './PracticeSettingsView';
 import TaskSettingsView from './TaskSettingsView';
@@ -32,6 +34,7 @@ const SettingsView: FC = () => {
     taskSettings: taskSettingsSaved,
     photoDiodeSettings: photoDiodeSettingsSaved,
     keySettings: keySettingsSaved,
+    nextStepSettings: nextStepSettingsSaved,
     saveSettings,
   } = useSettings();
 
@@ -49,6 +52,9 @@ const SettingsView: FC = () => {
     useState<PhotoDiodeSettings>(photoDiodeSettingsSaved);
   const [keySettings, updateKeySettings] =
     useState<KeySettings>(keySettingsSaved);
+  const [nextStepSettings, updateNextStepSettings] = useState<NextStepSettings>(
+    nextStepSettingsSaved,
+  );
 
   const saveAllSettings = (): void => {
     saveSettings('generalSettings', generalSettings);
@@ -58,6 +64,7 @@ const SettingsView: FC = () => {
     saveSettings('taskSettings', taskSettings);
     saveSettings('photoDiodeSettings', photoDiodeSettings);
     saveSettings('keySettings', keySettings);
+    saveSettings('nextStepSettings', nextStepSettings);
   };
 
   const disableSave = useMemo(() => {
@@ -68,7 +75,8 @@ const SettingsView: FC = () => {
       isEqual(validationSettingsSaved, validationSettings) &&
       isEqual(taskSettingsSaved, taskSettings) &&
       isEqual(photoDiodeSettingsSaved, photoDiodeSettings) &&
-      isEqual(keySettingsSaved, keySettings)
+      isEqual(keySettingsSaved, keySettings) &&
+      isEqual(nextStepSettingsSaved, nextStepSettings)
     ) {
       return true;
     }
@@ -88,6 +96,8 @@ const SettingsView: FC = () => {
     photoDiodeSettings,
     keySettingsSaved,
     keySettings,
+    nextStepSettingsSaved,
+    nextStepSettings,
   ]);
 
   return (
@@ -116,6 +126,10 @@ const SettingsView: FC = () => {
       <PhotoDiodeSettingsView
         photoDiodeSettings={photoDiodeSettings}
         onChange={updatePhotoDiodeSettings}
+      />
+      <NextStepSettingsView
+        nextStepSettings={nextStepSettings}
+        onChange={updateNextStepSettings}
       />
       <KeySettingsView keySettings={keySettings} onChange={updateKeySettings} />
       <Box>

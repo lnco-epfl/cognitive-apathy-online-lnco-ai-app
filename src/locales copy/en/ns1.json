@@ -89,7 +89,7 @@
     "QUESTION_3": "Your Level of Muscular Fatigue of the Left Arm",
     "QUESTION_4": "Your Level of Overall Tiredness"
   },
-  "END_EXPERIMENT_MESSAGE": "The experiment is now complete. Please let the experimenter know.",
+  "END_EXPERIMENT_MESSAGE": "The experiment is now complete. Click the button below and go to the next experiment.",
   "PROGRESS_BAR": {
     "PROGRESS_BAR_INTRODUCTION": "Introduction",
     "PROGRESS_BAR_PRACTICE": "Practice",
@@ -103,5 +103,11 @@
   "LIKERT_INTRO": "You will now answer a few questions. Press the button below to proceed.",
   "LIKERT_INTRO_DEMO": "You will now answer a question. Press the button below to proceed.",
   "HAND_TUTORIAL_MESSAGE": "The image below shows how the fingers of <b>your left hand</b> should be placed on the keyboard throughout the task. <br /><b>The index finger of your right hand should be on the right arrow at the same time.</b>",
-  "TUTORIAL_HEADER": "Tutorial"
+  "TUTORIAL_HEADER": "Tutorial",
+  "SETTINGS.NEXT_STEP.LABEL_NEXT_STEP": "Add a custom end page",
+  "SETTINGS.NEXT_STEP.LINK_PAGE_LABEL": "Custom End Page Settings",
+  "SETTINGS.NEXT_STEP.TITLE_LABEL": "Title",
+  "SETTINGS.NEXT_STEP.DESCRIPTION": "Main text on the end page",
+  "SETTINGS.NEXT_STEP.LINK_LABEL": "Optional: link to next task",
+  "SETTINGS.NEXT_STEP.LINK_TEXT_LABEL": "Text of the link"
 }

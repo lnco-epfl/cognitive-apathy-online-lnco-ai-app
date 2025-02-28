@@ -8,6 +8,7 @@ import {
   CalibrationSettingsType,
   GeneralSettingsType,
   KeySettings,
+  NextStepSettings,
   PhotoDiodeSettings,
   PracticeSettingsType,
   TaskSettingsType,
@@ -194,6 +195,9 @@ export class ExperimentState {
         leftIndex: 'f',
         leftMiddle: 'e',
       },
+      nextStepSettings: settingsVariables.nextStepSettings || {
+        linkToNextPage: false,
+      },
     };
   }
 
@@ -245,6 +249,10 @@ export class ExperimentState {
 
   getKeySettings(): KeySettings {
     return this.settings.keySettings;
+  }
+
+  getNextStepSettings(): NextStepSettings {
+    return this.settings.nextStepSettings;
   }
 
   getCurrentSuccesses = (calibrationPart: CalibrationPartType): number =>

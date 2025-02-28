@@ -61,6 +61,14 @@ export type OptionalKeys = {
   rightIndex?: string;
 };
 
+export type NextStepSettings = {
+  linkToNextPage: boolean;
+  title: string;
+  description: string;
+  link: string;
+  linkText: string;
+};
+
 // mapping between Setting names and their data type
 export type AllSettingsType = {
   generalSettings: GeneralSettingsType;
@@ -70,6 +78,7 @@ export type AllSettingsType = {
   taskSettings: TaskSettingsType;
   photoDiodeSettings: PhotoDiodeSettings;
   keySettings: KeySettings;
+  nextStepSettings: NextStepSettings;
 };
 
 // default values for the data property of settings by name
@@ -110,6 +119,13 @@ const defaultSettingsValues: AllSettingsType = {
     leftIndex: 'f',
     leftMiddle: 'e',
   },
+  nextStepSettings: {
+    linkToNextPage: false,
+    title: '',
+    description: '',
+    link: '',
+    linkText: '',
+  },
 };
 
 // list of the settings names
@@ -121,6 +137,7 @@ const ALL_SETTING_NAMES = [
   'taskSettings',
   'photoDiodeSettings',
   'keySettings',
+  'nextStepSettings',
 ] as const;
 
 // automatically generated types

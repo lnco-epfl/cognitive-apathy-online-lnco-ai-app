@@ -5,11 +5,14 @@
  *
  * @assets assets/
  */
+import jsPsychHtmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
 import PreloadPlugin from '@jspsych/plugin-preload';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Marked } from '@ts-stack/markdown';
 import { DataCollection, JsPsych, initJsPsych } from 'jspsych';
 
 import { ExperimentResult } from '../config/appResults';
-import { AllSettingsType } from '../context/SettingsContext';
+import { AllSettingsType, NextStepSettings } from '../context/SettingsContext';
 import {
   ExperimentState,
   MedianTapsType,
@@ -28,8 +31,23 @@ import {
   deviceConnectPages,
 } from './triggers/serialport';
 import { PROGRESS_BAR } from './utils/constants';
-import { DelayType, Timeline } from './utils/types';
+import { DelayType, Timeline, Trial } from './utils/types';
 import { changeProgressBar } from './utils/utils';
+
+/**
+ *
+ * @returns Returns a simple welcome screen that automatically triggers fullscreen when the start button is pressed
+ */
+const getEndPage = ({
+  title,
+  description,
+  link,
+  linkText,
+}: NextStepSettings): Trial => ({
+  type: jsPsychHtmlKeyboardResponse,
+  choices: 'NO_KEYS',
+  stimulus: `<div class='sd-html'><h3>${title}</h3><p>${Marked.parse(description)}</p><a class='link-to-experiment' target="_parent" href=${link}>${linkText}</a></div>`,
+});
 
 /**
  * @function run
@@ -307,9 +325,11 @@ export async function run({
       );
     },
   });
-
   // User clicks continue to download experiment data locally
   timeline.push(finishExperiment(jsPsych, updateDataWithSettings));
+  if (state.getNextStepSettings().linkToNextPage) {
+    timeline.push(getEndPage(state.getNextStepSettings()));
+  }
   await jsPsych.run(timeline);
 
   return jsPsych;
