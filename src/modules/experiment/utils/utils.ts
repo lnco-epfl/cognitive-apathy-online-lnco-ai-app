@@ -348,3 +348,6 @@ export const getHoldKeys = (state: ExperimentState): string[] =>
 // Get Tapping Key
 export const getTapKey = (state: ExperimentState): string =>
   state.getKeySettings().leftIndex.toLowerCase();
+
+export const resolveLink = (link: string, participantName: string): string =>
+  link.includes('{id}') ? link.replace('{id}', participantName) : link;

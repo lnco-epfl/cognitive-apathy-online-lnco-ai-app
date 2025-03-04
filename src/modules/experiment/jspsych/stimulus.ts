@@ -13,6 +13,8 @@ import {
   LOADING_BAR_MESSAGE,
   NO_STIMULI_VIDEO_TUTORIAL_MESSAGE,
   PRACTICE_MESSAGE,
+  REMEMBER_PAGE_DIRECTIONS,
+  REMEMBER_PAGE_TITLE,
   REWARD_PAGE_DIRECTIONS,
   REWARD_PAGE_TITLE,
   REWARD_TRIAL_MESSAGE,
@@ -353,6 +355,18 @@ export const rewardDirectionContent = `
   <h2>${REWARD_PAGE_TITLE}</h2>
   <p>
     ${REWARD_PAGE_DIRECTIONS}
+  </p>
+  <p style="color: #333; max-width: 80%; margin: 0 auto; line-height: 1.5;">
+    ${CLICK_BUTTON_TO_PROCEED_MESSAGE}
+  </p>
+</div>
+`;
+
+export const rememberDirectionContent = `
+<div style="text-align: center; margin: 0 10%;">
+  <h2>${REMEMBER_PAGE_TITLE}</h2>
+  <p>
+    ${REMEMBER_PAGE_DIRECTIONS}
   </p>
   <p style="color: #333; max-width: 80%; margin: 0 auto; line-height: 1.5;">
     ${CLICK_BUTTON_TO_PROCEED_MESSAGE}

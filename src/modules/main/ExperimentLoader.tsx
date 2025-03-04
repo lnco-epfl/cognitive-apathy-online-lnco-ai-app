@@ -2,7 +2,11 @@ import { FC, useEffect, useRef, useState } from 'react';
 
 import { Typography } from '@mui/material';
 
+import { useLocalContext } from '@graasp/apps-query-client';
+
 import { DataCollection, JsPsych } from 'jspsych';
+
+import { hooks } from '@/config/queryClient';
 
 import { TrialData } from '../config/appResults';
 import useExperimentResults from '../context/ExperimentContext';
@@ -26,7 +30,15 @@ export const ExperimentLoader: FC = () => {
    * 4. Perform updateData with the old data included (somehow)
    */
   const settings = useSettings();
+  const { memberId } = useLocalContext();
+  const { data: appContextData } = hooks.useAppContext();
+  let participantName = '';
 
+  if (appContextData?.members) {
+    participantName =
+      appContextData.members.find((member) => member.id === memberId)?.name ??
+      '';
+  }
   const jsPsychRef = useRef<null | Promise<JsPsych>>(null);
 
   const { status, experimentResultsAppData, setExperimentResult } =
@@ -162,7 +174,11 @@ export const ExperimentLoader: FC = () => {
       if (experimentResultsAppData.rawData?.trials.length === 0) {
         jsPsychRef.current = run({
           assetPaths: assetPath,
-          input: { settings, results: experimentResultsAppData },
+          input: {
+            settings,
+            results: experimentResultsAppData,
+            participantName,
+          },
           // eslint-disable-next-line @typescript-eslint/no-shadow
           updateData: (data, settings) => updateData(data, settings, []),
         });
@@ -192,6 +208,7 @@ export const ExperimentLoader: FC = () => {
             input: {
               settings,
               results: experimentResultsAppData,
+              participantName,
               remainingTrialBlocks,
               medianTaps: getMedainTaps(oldData),
             },
@@ -201,7 +218,11 @@ export const ExperimentLoader: FC = () => {
         else {
           jsPsychRef.current = run({
             assetPaths: assetPath,
-            input: { settings, results: experimentResultsAppData },
+            input: {
+              settings,
+              results: experimentResultsAppData,
+              participantName,
+            },
             // eslint-disable-next-line @typescript-eslint/no-shadow
             updateData: (data, settings) => updateData(data, settings, []),
           });

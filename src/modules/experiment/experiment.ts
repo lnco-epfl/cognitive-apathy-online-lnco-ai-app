@@ -32,7 +32,7 @@ import {
 } from './triggers/serialport';
 import { PROGRESS_BAR } from './utils/constants';
 import { DelayType, Timeline, Trial } from './utils/types';
-import { changeProgressBar } from './utils/utils';
+import { changeProgressBar, resolveLink } from './utils/utils';
 
 /**
  *
@@ -63,6 +63,7 @@ export async function run({
   input: {
     settings: AllSettingsType;
     results: ExperimentResult;
+    participantName: string;
     remainingTrialBlocks?: DelayType[];
     medianTaps?: MedianTapsType;
   };
@@ -328,7 +329,13 @@ export async function run({
   // User clicks continue to download experiment data locally
   timeline.push(finishExperiment(jsPsych, updateDataWithSettings));
   if (state.getNextStepSettings().linkToNextPage) {
-    timeline.push(getEndPage(state.getNextStepSettings()));
+    const nextStepLink = resolveLink(
+      state.getNextStepSettings().link,
+      input.participantName,
+    );
+    timeline.push(
+      getEndPage({ ...state.getNextStepSettings(), link: nextStepLink }),
+    );
   }
   await jsPsych.run(timeline);
 

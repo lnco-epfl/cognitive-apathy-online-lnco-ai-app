@@ -22,6 +22,7 @@ import {
   CONTINUE_BUTTON_MESSAGE,
   DELAY_DEFINITIONS,
   DEMO_TRIAL_MESSAGE,
+  ENABLE_BUTTON_AFTER_TIME,
   EXPECTED_MAXIMUM_PERCENTAGE,
   FAILED_MINIMUM_DEMO_TAPS_DURATION,
   FAILED_MINIMUM_DEMO_TAPS_MESSAGE,
@@ -57,7 +58,7 @@ import {
 } from '../utils/utils';
 import { ExperimentState } from './experiment-state-class';
 import { likertIntro, likertIntroDemo } from './message-trials';
-import { acceptanceThermometer } from './stimulus';
+import { acceptanceThermometer, rememberDirectionContent } from './stimulus';
 
 /**
  * @const failedMinimumDemoTapsTrial
@@ -466,6 +467,18 @@ export const createRewardDisplayTrial = (
 });
 
 /**
+ * Simple Trial to at the beginning of the actual experiment
+ * @param jsPsych Experiment
+ * @returns The Trial Object
+ */
+const rememberEffortRewardTrialDirection = (): Trial => ({
+  type: htmlButtonResponse,
+  choices: [CONTINUE_BUTTON_MESSAGE],
+  stimulus: [rememberDirectionContent],
+  enable_button_after: ENABLE_BUTTON_AFTER_TIME,
+});
+
+/**
  * Generate a complete Trial Block for a specific delay by generating a demo block, the actual trials, the lickert questions and finally the reward display
  * @param jsPsych experiment context
  * @param state experiment state
@@ -491,6 +504,7 @@ export const generateTaskTrialBlock = (
         );
       },
     },
+    { ...rememberEffortRewardTrialDirection() },
     {
       timeline: createTaskBlockTrials(
         jsPsych,
