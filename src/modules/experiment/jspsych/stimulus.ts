@@ -2,6 +2,7 @@ import { KeySettings } from '@/modules/context/SettingsContext';
 
 import {
   ACCEPTANCE_TRIAL_MESSAGE,
+  CALIBRATION_MESSAGE,
   CLICK_BUTTON_TO_PROCEED_MESSAGE,
   CONTINUE_MESSAGE_DIRECTION,
   CONTINUE_MESSAGE_TITLE,
@@ -31,7 +32,7 @@ import { ExperimentState } from './experiment-state-class';
 export function stimulus(
   showThermometer: boolean,
   mercuryHeight: number,
-  showPracticeText: boolean,
+  trialType: string,
   lowerBound: number,
   upperBound: number,
   targetArea: boolean,
@@ -60,12 +61,22 @@ export function stimulus(
   </div>`
     : ``;
 
-  const practiceText = showPracticeText
-    ? `
-    <div id="status" style="margin-top: 50px; position:absolute; top:20%;">
-      <div id="start-message" style="color: black;">${PRACTICE_MESSAGE(keyToTap)}</div>
-    </div>`
-    : ``;
+  let extraText = '';
+
+  if (trialType === 'practice') {
+    extraText = `
+        <div id="status" style="margin-top: 50px; position:absolute; top:20%;">
+          <div id="start-message" style="color: black;">${PRACTICE_MESSAGE(keyToTap)}</div>
+        </div>`;
+  } else if (
+    trialType === CalibrationPartType.CalibrationPart1 ||
+    trialType === CalibrationPartType.FinalCalibrationPart1
+  ) {
+    extraText = `
+        <div id="status" style="margin-top: 50px; position:absolute; top:20%;">
+          <div id="start-message" style="color: green;">${CALIBRATION_MESSAGE(keyToTap)}</div>
+        </div>`;
+  }
 
   const thermometer = showThermometer
     ? `<div
@@ -89,7 +100,7 @@ export function stimulus(
   return `
       <div id="go-message" style="position: absolute; top:8%; font-size: 140px; color: green; visibility: hidden; transform: translateX(-50%); left: 50%; white-space: nowrap;">${GO_MESSAGE}</div>
       <div id="task-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 60px 200px;">
-        ${practiceText}
+        ${extraText}
         <div style="display: flex; align-items: center; position: relative;">
           ${targetAreaText}
           ${thermometer}

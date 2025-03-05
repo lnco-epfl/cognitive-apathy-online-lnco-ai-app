@@ -40,7 +40,8 @@ export const REWARD_DEFINITIONS: {
 
 export const DEFAULT_REWARD_YITTER = 0.5;
 export const DEFAULT_BOUNDS_VARIATION = 3;
-export const TOTAL_REWARD_MONEY = 8;
+export const TOTAL_REWARD_MONEY = 6;
+export const CURRENCY = 'GBP';
 
 export const NUM_CALIBRATION_WITHOUT_FEEDBACK_TRIALS = 4; // 4 default
 export const NUM_CALIBRATION_WITH_FEEDBACK_TRIALS = 3; // 3 default
@@ -102,6 +103,7 @@ export const PASSED_VALIDATION_MESSAGE = i18n.t('PASSED_VALIDATION_MESSAGE');
 export const FAILED_VALIDATION_MESSAGE = i18n.t('FAILED_VALIDATION_MESSAGE');
 export const KEY_INSTRUCTIONS = (keySettings: KeySettings): string[] =>
   Object.entries(keySettings)
+    .filter(([key]) => key !== 'leftIndex')
     .sort(
       ([keyA], [keyB]) =>
         customKeyOrder.indexOf(keyA) - customKeyOrder.indexOf(keyB),
@@ -268,6 +270,8 @@ export const HOLD_KEYS_MESSAGE = (keySettings: KeySettings): string => {
 export const KEY_TAPPED_EARLY_MESSAGE = i18n.t('KEY_TAPPED_EARLY_MESSAGE');
 export const PRACTICE_MESSAGE = (keyToTap: string): string =>
   i18n.t('PRACTICE_MESSAGE', { KEY_REPLACE: toName(keyToTap) });
+export const CALIBRATION_MESSAGE = (keyToTap: string): string =>
+  i18n.t('CALIBRATION_MESSAGE', { KEY_REPLACE: toName(keyToTap) });
 export const RELEASE_KEYS_MESSAGE = i18n.t('RELEASE_KEYS_MESSAGE');
 export const REWARD_TOTAL_MESSAGE = (
   totalSuccessfulReward: string,

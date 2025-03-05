@@ -420,7 +420,7 @@ class TappingTask {
       display_element.innerHTML = stimulus(
         trial.showThermometer,
         this.mercuryHeight,
-        trial.task === 'practice',
+        trial.task,
         trial.bounds[0],
         trial.bounds[1],
         trial.targetArea,
@@ -435,7 +435,7 @@ class TappingTask {
     display_element.innerHTML = stimulus(
       trial.showThermometer,
       this.mercuryHeight,
-      trial.task === 'practice',
+      trial.task,
       trial.bounds[0],
       trial.bounds[1],
       trial.targetArea,
