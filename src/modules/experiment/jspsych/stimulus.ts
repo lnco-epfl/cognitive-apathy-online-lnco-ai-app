@@ -173,13 +173,13 @@ export const noStimuliVideo = (keySettings: KeySettings): string => `
       ${NO_STIMULI_VIDEO_TUTORIAL_MESSAGE(keySettings)}
     </p>
   </div>
-  <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; margin: 0 auto; flex-direction: column;">
+  <div style="flex-grow: 1; display: flex; min-width:600px; justify-content: center; align-items: center; margin: 0 auto; flex-direction: column;">
     <div class="video-div">
       <h4>Demonstration Video</h4>
       <video
         id="videoTutorial"
         title="Tutorial Video"
-        style="width: 100%; height: auto;"
+        style="width: 100%; height: auto; border: 2px solid #000;"
         src="./assets/videos/calibration-part1.mp4"
         autoplay
         muted
@@ -199,12 +199,13 @@ export const stimuliVideo = (keySettings: KeySettings): string => `
       ${STIMULI_VIDEO_TUTORIAL_MESSAGE(keySettings)}
     </p>
   </div>
-  <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
-    <div style="width: 40%; max-width: 700px; height: auto; background-color: rgb(255, 255, 255);">
+  <div style="flex-grow: 1; display: flex; min-width:600px; justify-content: center; align-items: center; margin: 0 auto; flex-direction: column;">
+    <div class="video-div">
+      <h4>Demonstration Video</h4>
       <video
         id="videoTutorial"
         title="Tutorial Video"
-        style="width: 100%; height: auto;"
+        style="width: 100%; height: auto; border: 2px solid #000;"
         src="./assets/videos/calibration-part2.mp4"
         autoplay
         muted
@@ -226,12 +227,13 @@ export const validationVideo = (keySettings: KeySettings): string => `
       ${VALIDATION_VIDEO_TUTORIAL_MESSAGE(keySettings)}
     </p>
   </div>
-  <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
-    <div style="width: 100%; max-width: 500px; height: auto; background-color: rgb(255, 255, 255);">
+  <div style="flex-grow: 1; display: flex; min-width:600px; justify-content: center; align-items: center; margin: 0 auto; flex-direction: column;">
+    <div class="video-div">
+      <h4>Demonstration Video</h4>
       <video
         id="videoTutorial"
         title="Tutorial Video"
-        style="width: 100%; height: auto;"
+        style="width: 100%; height: auto; border: 2px solid #000;"
         src="./assets/videos/validation.mp4"
         autoplay
         muted

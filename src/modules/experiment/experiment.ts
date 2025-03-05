@@ -17,7 +17,6 @@ import {
   ExperimentState,
   MedianTapsType,
 } from './jspsych/experiment-state-class';
-import { finishExperiment } from './jspsych/finish';
 import './jspsych/i18n';
 import { buildCalibration, buildFinalCalibration } from './parts/calibration';
 import { buildIntroduction } from './parts/introduction';
@@ -217,16 +216,19 @@ export async function run({
     }, */
   });
 
-  // Ensures warning message on reload
-  window.addEventListener('beforeunload', (event) => {
+  const blockUnload = (event: BeforeUnloadEvent): string => {
     event.preventDefault();
     // eslint-disable-next-line no-param-reassign
     event.returnValue = ''; // Modern browsers require returnValue to be set
+    updateDataWithSettings(jsPsych.data.get());
     return '';
-  });
+  };
+  // Ensures warning message on reload
+  window.addEventListener('beforeunload', blockUnload);
 
   // Update everything below to just structurally import individual parts of the experiment
   const timeline: Timeline = [];
+
   timeline.push({
     type: PreloadPlugin,
     assetPaths,
@@ -326,16 +328,20 @@ export async function run({
       );
     },
   });
+
   // User clicks continue to download experiment data locally
-  timeline.push(finishExperiment(jsPsych, updateDataWithSettings));
   if (state.getNextStepSettings().linkToNextPage) {
     const nextStepLink = resolveLink(
       state.getNextStepSettings().link,
       input.participantName,
     );
-    timeline.push(
-      getEndPage({ ...state.getNextStepSettings(), link: nextStepLink }),
-    );
+    timeline.push({
+      ...getEndPage({ ...state.getNextStepSettings(), link: nextStepLink }),
+      on_load() {
+        window.removeEventListener('beforeunload', blockUnload);
+        updateDataWithSettings(jsPsych.data.get());
+      },
+    });
   }
   await jsPsych.run(timeline);
 
