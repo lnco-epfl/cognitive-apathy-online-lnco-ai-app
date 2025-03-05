@@ -272,7 +272,7 @@ export const createTaskBlockDemo = (
     {
       type: htmlButtonResponse,
       stimulus: () =>
-        `<p>${DEMO_TRIAL_MESSAGE(state.getTaskSettings().taskBoundsIncluded.length, getNumTrialsPerBlock(state), state.getKeySettings())}</p>`,
+        `<p>${DEMO_TRIAL_MESSAGE(state.getTaskSettings().taskBoundsIncluded.length > 3 ? 3 : state.getTaskSettings().taskBoundsIncluded.length, getNumTrialsPerBlock(state), state.getKeySettings())}</p>`,
       choices: [CONTINUE_BUTTON_MESSAGE],
       on_start() {
         state.resetDemoTrialSuccesses(); // Reset demo successes before starting
