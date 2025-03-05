@@ -453,7 +453,7 @@ export const createRewardDisplayTrial = (
       (totalSuccessfulReward / totalPoints) *
       totalMoney
     ).toFixed(2);
-    return `<p>${REWARD_TOTAL_MESSAGE(totalSuccessfulReward.toFixed(2), currentRewardMoney, CURRENCY)}</p>`;
+    return `<p>${REWARD_TOTAL_MESSAGE(totalSuccessfulReward.toFixed(0), currentRewardMoney, CURRENCY)}</p>`;
   },
   data: {
     task: 'display_reward',
