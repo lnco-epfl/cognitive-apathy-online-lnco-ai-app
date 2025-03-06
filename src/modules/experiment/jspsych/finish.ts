@@ -75,7 +75,7 @@ export const finishExperimentEarly = (
   state: ExperimentState,
 ): void => {
   jsPsych.abortExperiment(
-    `${FAILED_VALIDATION_MESSAGE}${state.getGeneralSettings().earlyFinishLink ? `<a href='${state.getGeneralSettings().earlyFinishLink}'>Click here to go back to Prolific</a>` : ''}`,
+    `${FAILED_VALIDATION_MESSAGE}${state.getGeneralSettings().earlyFinishLink ? `<a href='${state.getGeneralSettings().earlyFinishLink}' target="_parent">Click here to go back to Prolific</a>` : ''}`,
   );
   const resultData = jsPsych.data.get();
   onFinish(resultData);
@@ -103,7 +103,7 @@ export const finishExperimentEarlyTrial = (
 ): Trial => ({
   type: htmlButtonResponse,
   choices: [FINISH_BUTTON_MESSAGE],
-  stimulus: `${FAILED_VALIDATION_MESSAGE}${state.getGeneralSettings().earlyFinishLink ? `<a href='${state.getGeneralSettings().earlyFinishLink}'>Click here to go back to Prolific</a>` : ''}`,
+  stimulus: `${FAILED_VALIDATION_MESSAGE}${state.getGeneralSettings().earlyFinishLink ? `<a href='${state.getGeneralSettings().earlyFinishLink}' target="_parent">Click here to go back to Prolific</a>` : ''}`,
   data: {
     task: 'finish_experiment',
   },

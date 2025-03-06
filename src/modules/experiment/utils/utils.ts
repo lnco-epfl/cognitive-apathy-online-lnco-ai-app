@@ -245,7 +245,7 @@ export const changeProgressBar = (
 export function showEndScreen(message: string, link: string): void {
   const screen: HTMLElement = document.createElement('div');
   screen.classList.add('custom-overlay');
-  screen.innerHTML = `<h2 style="text-align: center; top: 50%;">${message}</h2>${link ? `<a href='${link}'>Click here to go back to Prolific.</a>` : ''}`;
+  screen.innerHTML = `<h2 style="text-align: center; top: 50%;">${message}</h2>${link ? `<a href='${link}' target="_parent">Click here to go back to Prolific.</a>` : ''}`;
   document.body.appendChild(screen);
 }
 
