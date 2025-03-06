@@ -5,6 +5,7 @@ import {
   Radio,
   RadioGroup,
   Switch,
+  TextField,
   Typography,
 } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -64,6 +65,24 @@ const GeneralSettingsView: FC<GeneralSettingsViewProps> = ({
         });
       }}
       checked={generalSettings.useDevice}
+    />
+    <Stack spacing={0}>
+      <Typography variant="body1">
+        Prolific URL for early finishers that fail the experiment early
+      </Typography>
+      <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
+        When a participant fails calibration or validation, they will be sent to
+        prolific with a link for failed experiments
+      </Typography>
+    </Stack>
+    <TextField
+      value={generalSettings.earlyFinishLink}
+      onChange={(e) =>
+        onChange({
+          ...generalSettings,
+          earlyFinishLink: e.target.value,
+        })
+      }
     />
   </Stack>
 );

@@ -249,7 +249,7 @@ export const validationResultScreen = (
   },
   on_finish() {
     if (!state.getState().validationState.validationSuccess) {
-      finishExperimentEarly(jsPsych, updateData);
+      finishExperimentEarly(jsPsych, updateData, state);
     }
   },
 });

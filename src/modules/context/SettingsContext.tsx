@@ -12,6 +12,7 @@ import {
 export type GeneralSettingsType = {
   fontSize: 'small' | 'normal' | 'large' | 'extra-large';
   useDevice: boolean;
+  earlyFinishLink: string;
 };
 
 export type PracticeSettingsType = {
@@ -86,6 +87,7 @@ const defaultSettingsValues: AllSettingsType = {
   generalSettings: {
     fontSize: 'normal',
     useDevice: false,
+    earlyFinishLink: '',
   },
   practiceSettings: {
     numberOfPracticeLoops: 0,

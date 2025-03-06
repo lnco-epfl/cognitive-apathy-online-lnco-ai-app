@@ -277,7 +277,7 @@ export const createConditionalCalibrationTrial = (
     }),
     {
       // If minimum taps is not reached in this set of conditional trials, then end experiment
-      timeline: [finishExperimentEarlyTrial(jsPsych, updateData)],
+      timeline: [finishExperimentEarlyTrial(jsPsych, updateData, state)],
       conditional_function() {
         return (
           state.getState().medianTaps[calibrationPart] <

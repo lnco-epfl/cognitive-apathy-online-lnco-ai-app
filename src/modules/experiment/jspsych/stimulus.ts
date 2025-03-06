@@ -275,11 +275,11 @@ export const finalNoStimuliVideo = (keySettings: KeySettings): string => `
   </div>
 </div>`;
 
-export const finalStimuliVideo = `
+export const finalStimuliVideo = (keySettings: KeySettings): string => `
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 0;">
   <div style="text-align: center; margin-bottom: 0%;">
     <p">
-      ${FINAL_CALIBRATION_SECTION_DIRECTIONS_PART_2}
+      ${FINAL_CALIBRATION_SECTION_DIRECTIONS_PART_2(keySettings)}
     </p>
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">

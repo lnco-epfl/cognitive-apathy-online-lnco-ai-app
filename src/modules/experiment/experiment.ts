@@ -316,6 +316,7 @@ export async function run({
       );
     },
   });
+
   timeline.push({
     timeline: [
       ...buildFinalCalibration(jsPsych, state, updateDataWithSettings, device),
